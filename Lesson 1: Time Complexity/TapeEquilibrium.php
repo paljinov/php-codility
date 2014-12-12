@@ -54,7 +54,7 @@ Elements of input arrays can be modified.
 */
 
 /**
- * CODILITY ANALYIS: 
+ * CODILITY ANALYSIS: 
  * https://codility.com/demo/results/demoP7SCSC-ACG/
  * Correctness:	100%
  * Performance:	100%

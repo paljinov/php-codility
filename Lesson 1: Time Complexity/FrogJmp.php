@@ -36,7 +36,7 @@ Complexity:
 */
 
 /*
- * CODILITY ANALYIS: 
+ * CODILITY ANALYSIS: 
  * https://codility.com/demo/results/demoYPC9BY-8VW/
  * Correctness:	100%
  * Performance:	100%

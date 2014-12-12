@@ -35,7 +35,7 @@ Elements of input arrays can be modified.
 */
 
 /*
- * CODILITY ANALYIS: 
+ * CODILITY ANALYSIS: 
  * https://codility.com/demo/results/demoSBMTHA-TZN/
  * Correctness:	100%
  * Performance:	100%
