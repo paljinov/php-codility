@@ -9,7 +9,7 @@ Count the minimal number of jumps that the small frog must perform to reach its 
 
 Write a function:
 
-    int solution(int X, int Y, int D); 
+    function solution($X, $Y, $D); 
 
 that, given three integers X, Y and D, returns the minimal number of jumps 
 from position X to a position equal to or greater than Y.
@@ -35,6 +35,13 @@ Complexity:
         expected worst-case space complexity is O(1).
 */
 
+/*
+ * CODILITY ANALYIS: 
+ * https://codility.com/demo/results/demoYPC9BY-8VW/
+ * Correctness:	100%
+ * Performance:	100%
+ * Task score:	100%
+ */
 function solution($X, $Y, $D)
 {
 	// distance between end ($Y) and start ($X) position

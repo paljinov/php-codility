@@ -53,6 +53,13 @@ Complexity:
 Elements of input arrays can be modified.
 */
 
+/**
+ * CODILITY ANALYIS: 
+ * https://codility.com/demo/results/demoP7SCSC-ACG/
+ * Correctness:	100%
+ * Performance:	100%
+ * Task score:	100%
+ */
 function solution($A) 
 {
 	// left sum after array $A splits, initialized to 0
