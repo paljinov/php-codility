@@ -56,6 +56,7 @@ Elements of input arrays can be modified.
 /**
  * CODILITY ANALYSIS: 
  * https://codility.com/demo/results/demoP7SCSC-ACG/
+ * LEVEL: EASY
  * Correctness:	100%
  * Performance:	100%
  * Task score:	100%

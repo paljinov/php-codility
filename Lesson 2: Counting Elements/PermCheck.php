@@ -51,7 +51,8 @@ Assume that:
 
 Complexity:
         expected worst-case time complexity is O(N);
-        expected worst-case space complexity is O(N), beyond input storage (not counting the storage required for input arguments).
+        expected worst-case space complexity is O(N), 
+        beyond input storage (not counting the storage required for input arguments).
 
 Elements of input arrays can be modified.
 */
@@ -59,6 +60,7 @@ Elements of input arrays can be modified.
 /*
  * CODILITY ANALYSIS: 
  * https://codility.com/demo/results/demoVWUWBQ-UUP/
+ * LEVEL: EASY
  * Correctness:	100%
  * Performance:	100%
  * Task score:	100%
