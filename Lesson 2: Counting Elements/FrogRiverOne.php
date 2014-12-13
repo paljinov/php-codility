@@ -84,7 +84,3 @@ function solution($X, $A)
 	// if end position is not reached
 	return -1;
 }
-
-$X = 5;
-$A = [1, 3, 1, 4, 2, 3, 5, 4];
-solution($X, $A);
