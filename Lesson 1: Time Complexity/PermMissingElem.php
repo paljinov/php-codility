@@ -36,26 +36,22 @@ Elements of input arrays can be modified.
 
 /*
  * CODILITY ANALYSIS: 
- * https://codility.com/demo/results/demoSBMTHA-TZN/
+ * https://codility.com/demo/results/demoDBGQT9-8VH/
  * Correctness:	100%
  * Performance:	100%
  * Task score:	100%
  */
 function solution($A) 
 {
-
-	// this task can be easily solved by using Gauss sum formula for positive consecutive integers
-	// sum = (N * (N + 1)) / 2
-	// N => count of positive consecutive integers
+	// this task can be easily solved by using Gauss sum formula for positive consecutive integers,
+	// also known as PERMUATION number array
+	// sum = (N * (N + 1)) / 2, where N is count of positive consecutive integers
 	// for example, sum of 1 + 2 + 3 + 4 + 5 = (5 * (5 + 1)) / 2 = (5 * 6) / 2 = 30 / 2 = 15
 	// according to legend, Gauss figured this out at the age of 8 during class in elementary school
-
+	//
 	// we know all integers are positive and different, so when we add missing element we 
 	// have Gauss formula
-	
-	// number of positive integers including missing one
-	$N = count($A) + 1;
-
+	// 
 	// integer has 32-bit or 64 bit, depending on PHP build and platform, and 32 bit is limitation 
 	// for N * ($N + 1) when N = 100 000
 	// 32-bit int max number: 2147483647
@@ -64,6 +60,9 @@ function solution($A)
 	// http://php.net/manual/en/language.types.float.php
 	// "The size of a float is platform-dependent, although a maximum of ~1.8e308 with a precision 
 	// of roughly 14 decimal digits is a common value (the 64 bit IEEE format)."
+	
+	// number of positive integers including missing one
+	$N = count($A) + 1;
 	$sumIncludingMissingNumber = ((float)$N * ($N + 1)) / 2;
 	$sumWithoutMissingNumber = (float)0;
 	foreach($A as $number) 
