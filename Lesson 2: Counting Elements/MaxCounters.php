@@ -119,7 +119,3 @@ function solution($N, $A)
 
 	return $counters;
 }
-
-$N = 5;
-$A = [3, 4, 4, 6, 1, 4, 4];
-solution($N, $A);
