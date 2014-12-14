@@ -16,7 +16,7 @@ Directory structure example
     solution1.php       # Task1 solution
     solution2.php       # Task2 solution
     solution3.php       # Task3 solution
-    lesson.pdf          # Lesson PDF, learn algorithmic basic required required to solve tasks
+    lesson.pdf          # Lesson PDF, learn algorithmic basic required to solve tasks
 </pre>
 
 Every solution has description according to this example:
