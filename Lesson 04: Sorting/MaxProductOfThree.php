@@ -62,14 +62,14 @@ function solution($A)
 	// first, array $A is sorted ascending from minimum to maximum integer
 	sort($A);
 
-	// 2 smallest negative integers (two biggest absolute negative integers)
-	$min2Negative = array();
-	// 3 biggest negative integers (three smallest absolute negative integers)
-	$max3Negative = array();
-	// 3 biggest positive integers, 0 which is neutral number is also included
+	// 3 biggest positive integers, if they exist, 0 which is neutral number is also included
 	$max3PositiveInclZero = array();
+	// 3 biggest negative integers, if they exist (three smallest absolute negative integers)
+	$max3Negative = array();
+	// 2 smallest negative integers, if they exist (two biggest absolute negative integers)
+	$min2Negative = array();
 
-	// if there are at least 3 positive integers, we get 3 biggest
+	// if there are positive integers, we get 3 biggest
 	for($i = count($A) - 1; $i >= count($A) - 3; $i--)
 		if($A[$i] >= 0)
 			$max3PositiveInclZero[] = $A[$i];
@@ -81,7 +81,7 @@ function solution($A)
 			if($A[$i] < 0)
 				$max3PositiveInclZero[] = $A[$i];
 	}
-	// if there are positive integers, we get 2 smallest negative integers
+	// if there are positive integers, we get 2 smallest negative integers if they exist
 	else
 	{
 		for($i = 0; $i <= 1; $i++) 
