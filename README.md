@@ -12,15 +12,15 @@ This repository represents my solutions to codility algorithmic tasks. The plan 
 Directory structure example
 ============
 <pre>
-/lesson             # Folder for certain lesson 
-    solution1.php   # Task1 solution
-    solution2.php   # Task2 solution
-    solution2.php   # Task3 solution
-    lesson.pdf      # Lesson PDF, learn algorithmic basic required required to solve tasks
+/lesson x: Lesson name  # Folder for certain lesson 
+    solution1.php       # Task1 solution
+    solution2.php       # Task2 solution
+    solution2.php       # Task3 solution
+    lesson.pdf          # Lesson PDF, learn algorithmic basic required required to solve tasks
 </pre>
 
 Every solution has description according to this example:
-<pre>
+```php
 /*
  * CODILITY ANALYSIS: https://codility.com/demo/results/demoQV2PE9-UDK/
  * LEVEL: EASY
@@ -28,13 +28,11 @@ Every solution has description according to this example:
  * Performance:	100%
  * Task score:	100%
  */
-<code ="php">
 function solution($A)
 {
     // ... some php code
 }
-</code>
-</pre>
+```
 
 Contribution
 ============
