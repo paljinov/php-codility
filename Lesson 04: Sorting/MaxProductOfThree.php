@@ -59,7 +59,7 @@ Elements of input arrays can be modified.
  */
 function solution($A) 
 {
-	// first, array $A is sorted ascending from minimum to maximum integer
+	// we sort array $A in ascending order from minimum to maximum integer
 	sort($A);
 
 	// 3 biggest positive integers, if they exist, 0 which is neutral number is also included
