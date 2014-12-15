@@ -54,9 +54,10 @@ Elements of input arrays can be modified.
  */
 function solution($A) 
 {
-	// we sort array $A in ascending order from minimum to maximum integer, 
+	// we sort array $A in ascending order from minimum to maximum integer; if closest integers 
+	// don't fullfill triangular conditions, farther integers will not fulfill it also
 	// index association is not maintained because rule 0 ≤ P < Q < R < N is not important;
-	// namely the following rules next rules cover every possible combination:
+	// namely the following rules cover every possible combination:
 	// A[P] + A[Q] > A[R]
 	// A[Q] + A[R] > A[P]
 	// A[R] + A[P] > A[Q]
