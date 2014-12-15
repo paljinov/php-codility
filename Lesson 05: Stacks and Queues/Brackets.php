@@ -83,6 +83,3 @@ function solution($S)
 	else
 		return 0;
 }
-
-$S = '([)()]';
-solution($S);
