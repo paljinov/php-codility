@@ -56,6 +56,7 @@ function solution($A)
 	$maxOccurrences = 0;
 	// key of integer which occurred most time
 	$maxOccurrencesKey = null;
+
 	foreach($A as $key => $value) 
 	{
 		if(empty($integerOccurrences[$value]))
@@ -73,7 +74,7 @@ function solution($A)
 	}
 
 	// if key of max occured integer is not set, 
-	// or integer doesn't occurs in more than half of the elements of $A
+	// or max occured integer doesn't occurs in more than half of the elements of $A
 	if($maxOccurrencesKey === null || ($maxOccurrences <= count($A) / 2))
 		return -1;
 	else
