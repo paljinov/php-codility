@@ -101,12 +101,10 @@ function solution($N, $P, $Q)
 		}
 	}
 
-	// this is important for later speed, $primesProduct key is semiprime,
-	// and value is array position, array positions start from 1
-	// we will use array_key_exists function instead of array_search function for
-	// searching semiprime inside some range
+	// this $semiPrimes array reorganization is very important for later speed
+	// when we will use array_key_exists function instead of array_search function for
+	// searching semiprime inside some range, because it is much faster;
 	// array_key_exists Big-O is really close to O(1), and array_search Big-O is O(n)
-	
 	// first we sort array by key, and value of every key marks array position, starting from 1
 	ksort($semiPrimes);
 	$i = 1;
