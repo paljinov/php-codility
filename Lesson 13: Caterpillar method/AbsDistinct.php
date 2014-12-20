@@ -50,7 +50,7 @@ Elements of input arrays can be modified.
 */
 
 /*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demo3XGW74-RN5/
+ * CODILITY ANALYSIS: https://codility.com/demo/results/demoM6ZF9H-QAM/
  * LEVEL: EASY
  * Correctness:	100%
  * Performance:	100%
@@ -72,5 +72,5 @@ function solution($A)
 	// count of absolute distinct integers in array $A
 	$absDistinctCount = count($absDistinct);
 
-	return count($absDistinct);
+	return $absDistinctCount;
 }
