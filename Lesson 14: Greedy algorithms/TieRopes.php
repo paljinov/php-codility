@@ -72,7 +72,7 @@ Elements of input arrays can be modified.
 */
 
 /*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demo3P7EUF-3P2/
+ * CODILITY ANALYSIS: https://codility.com/demo/results/demoC2987X-8B3/
  * LEVEL: EASY
  * Correctness:	100%
  * Performance:	100%
@@ -85,7 +85,7 @@ function solution($K, $A)
 
 	// sum of tied ropes
 	$sumLength = 0;
-	foreach($A as $key => $ropeLength)
+	foreach($A as $ropeLength)
 	{
 		$sumLength += $ropeLength;
 		if($sumLength >= $K)
