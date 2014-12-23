@@ -79,7 +79,7 @@ function solution($A, $B)
 	//     bigger downstream river positions than surviving upstream fish will flow downstream
 	//     
 	// UPSTREAM															DOWNSTREAM
-	// <--[0](4)		[1](3)-->		<--[2](2)		<--[3](1)		<--[3](5)
+	// <--[0](4)		[1](3)-->		<--[2](2)		<--[3](1)		<--[4](5)
 
 	$aliveFishCounter = 0;
 	// fish that flows downstream
