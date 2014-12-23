@@ -47,7 +47,7 @@ Elements of input arrays can be modified.
 */
 
 /*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demoHSJ4NW-Z5V/
+ * CODILITY ANALYSIS: https://codility.com/demo/results/demoCBVR9P-WT9/
  * LEVEL: HARD
  * Correctness:	100%
  * Performance:	100%
@@ -79,29 +79,31 @@ function solution($A)
 		$dep[$depIndex]++;
 	}
 
-	// current disks at each position (which are started, but not yet ended)
-	$currentDisks = 0;
+	// current discs at each position (which are started, but not yet ended)
+	$currentDiscs = 0;
+	// iterating through positions, [0, N-1] domain 
 	for($i = 0; $i < count($A); $i++)
 	{
-		// if disc start position is higher than 0
+		// if there are discs which start at this position
 		if($dsp[$i] > 0)
 		{
-			// current discs multiplied by count of disks which started at position $i
-			$intersectingDiscs += $currentDisks * $dsp[$i];
-			// count of intersections with already started disks
+			// current discs multiplied by count of discs which started at position $i
+			$intersectingDiscs += $currentDiscs * $dsp[$i];
+			var_dump($intersectingDiscs);
+			// intersections of already started discs
 			// Gauss sum formula n(n + 1)/2, where n = $dsp[$i] - 1, which leads to: 
 			// ($dsp[$i] - 1) * [($dsp[$i] - 1) + 1] / 2 => $dsp[$i] * ($dsp[$i] - 1) / 2
 			$intersectingDiscs += $dsp[$i] * ($dsp[$i] - 1) / 2;
-			
+			var_dump($intersectingDiscs);
 			// if the number of intersecting pairs exceeds 10,000,000 
 			if($intersectingDiscs > 10000000)
 				return -1;
 			
-			// disks started at this position
-			$currentDisks += $dsp[$i];
+			// discs started at this position
+			$currentDiscs += $dsp[$i];
 		}
-		// disks ended at this position
-		$currentDisks -= $dep[$i];
+		// discs ended at this position
+		$currentDiscs -= $dep[$i];
 	}
 
 	return $intersectingDiscs;
