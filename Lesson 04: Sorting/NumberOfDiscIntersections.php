@@ -47,7 +47,7 @@ Elements of input arrays can be modified.
 */
 
 /*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demoCBVR9P-WT9/
+ * CODILITY ANALYSIS: https://codility.com/demo/results/demoKUH84U-XJE/
  * LEVEL: HARD
  * Correctness:	100%
  * Performance:	100%
@@ -89,12 +89,11 @@ function solution($A)
 		{
 			// current discs multiplied by count of discs which started at position $i
 			$intersectingDiscs += $currentDiscs * $dsp[$i];
-			var_dump($intersectingDiscs);
 			// intersections of already started discs
 			// Gauss sum formula n(n + 1)/2, where n = $dsp[$i] - 1, which leads to: 
 			// ($dsp[$i] - 1) * [($dsp[$i] - 1) + 1] / 2 => $dsp[$i] * ($dsp[$i] - 1) / 2
 			$intersectingDiscs += $dsp[$i] * ($dsp[$i] - 1) / 2;
-			var_dump($intersectingDiscs);
+
 			// if the number of intersecting pairs exceeds 10,000,000 
 			if($intersectingDiscs > 10000000)
 				return -1;
