@@ -79,99 +79,94 @@ Elements of input arrays can be modified.
 */
 
 /**
- * CODILITY ANALYSIS: https://codility.com/demo/results/demoP8QAKJ-RM4/
+ * CODILITY ANALYSIS: https://codility.com/demo/results/demoEFJH4Y-JBC/
  * LEVEL: HARD
  * Correctness:	100%
- * Performance:	75%
- * Task score:	87%
+ * Performance:	100%
+ * Task score:	100%
  */
 function solution($A, $B, $C)
 {
 	// number of planks, where $A is plank start, and $B plank end
 	$N = count($A);
 
-	// minimal number of nails that, used sequentially, allow all the planks to be nailed
-	$minNails = 1;
-	// maximum number of nails that, used sequentially, allow all the planks to be nailed
-	$maxNails = count($C);
+	$planks = array();
+	for($i = 0; $i < $N; $i++)
+	{
+		$planks[$i]['start'] = $A[$i];
+		$planks[$i]['end'] = $B[$i];
+	}
+
+	// starting number of nails
+	$beg = 1;
+	// ending number of nails
+	$end = count($C);
 
 	// minimal required number of nails that allow all the planks to be nailed
 	// initialized to -1 if it is not possible to nail all the planks
-	$requiredNails = -1;
-	while($minNails <= $maxNails)
+	$result = -1;
+	while($beg <= $end)
 	{
 		// middle number of nails
-		$midNails = (int)ceil(($maxNails + $minNails) / 2);
-		// nails which can be used to nail planks
-		$availableNails = array_slice($C, 0, $midNails);
+		$mid = (int)(($beg + $end) / 2);
+		// nails with which we try to nail all the planks, 
+		// keys are preserved because they represent nails
+		$availableNails = array_slice($C, 0, $mid);
 
-		// nailed planks with defined number of nails
-		$nailedPlanks = nailedPlanks($A, $B, $availableNails);
+		// are all planks nailed ?
+		$areAllPlanksNailed = areAllPlanksNailed($planks, $availableNails);
 		// if all planks are nailed, we try to find if they can be nailed with less nails
-		if($nailedPlanks === $N)
+		if($areAllPlanksNailed)
 		{
-			$maxNails = $midNails - 1;
-			$requiredNails = $midNails;
+			$end = $mid - 1;
+			$result = $mid;
 		}
-		// if all plans are not nailed
+		// if all planks are not nailed, we try to find if they can be nailed with more nails
 		else
-			$minNails = $midNails + 1;
+			$beg = $mid + 1;
 	}
 
-	return $requiredNails;
+	return $result;
 }
 
 /**
- * Calculates maximum number of nailed planks with definite number of available nails.
+ * Checks if all planks are nailed with given sequence of nails.
  * 
- * @param array $A Planks start
- * @param array $B Planks end
+ * @param array $planks Planks start and end positions
  * @param array $availableNails Nails which can be used to nail planks
  * 
- * @return int $nailedPlanks Number of nailed planks
+ * @return true|false true if all planks are nailed, else false
  */
-function nailedPlanks($A, $B, $availableNails)
+function areAllPlanksNailed($planks, $availableNails)
 {
-	// nailed plank position
-	$nailedPlanks = array();
+	// sorting nails, from smallest to highest
+	sort($availableNails);
 
-	// minimal available nail value
-	$minNail = min($availableNails);
-	// maximum available nail value
-	$maxNail = max($availableNails);
-
-	// exchanges all keys with their associated values in an array, 
-	// so we can use array_key_exists which has complexity close to O(1)
-	$availableNails = array_flip($availableNails);
-
-	// number of planks
-	$N = count($A);
-	for($i = 0; $i < $N; $i++)
+	$nailedPlanks = 0;
+	// iterating through every plank
+	foreach($planks as $index => $plank)
 	{
-		// if plank is postioned partially between minimum and maximum nail value,
-		// it can be nailed for sure (at least max and min nail can be hammered)
-		if(($A[$i] <= $minNail && $B[$i] >= $minNail) || ($A[$i] <= $maxNail && $B[$i] >= $maxNail))
-			$nailedPlanks[$i] = 1;
-		// if plank is postioned completely between min and max nail value, 
-		// potentially it can be nailed
-		elseif($A[$i] > $minNail && $B[$i] < $maxNail)
+		// starting nail position
+		$beg = 0;
+		// ending nail position
+		$end = count($availableNails) - 1;
+		while($beg <= $end)
 		{
-			// position on plank
-			$x = $A[$i];
-			// while plank end is not reached
-			while($x <= $B[$i])
-			{
-				// checking if there is a nail which can be hammered
-				if(array_key_exists($x, $availableNails))
-				{
-					$nailedPlanks[$i] = 1;
-					break;
-				}
+			// middle mail position
+			$mid = (int)(($beg + $end) / 2);
 
-				$x++;
+			if($availableNails[$mid] < $plank['start'])
+				$beg = $mid + 1;
+			elseif($availableNails[$mid] > $plank['end'])
+				$end = $mid - 1;
+			// if nail is between plank start and end, plank can be nailed
+			else
+			{
+				$nailedPlanks++;
+				break;
 			}
 		}
 	}
 
-	return count($nailedPlanks);
+	return $nailedPlanks === count($planks) ? true : false;
 }
