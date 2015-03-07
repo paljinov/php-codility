@@ -82,8 +82,8 @@ Elements of input arrays can be modified.
  * CODILITY ANALYSIS: https://codility.com/demo/results/demoMRP2YA-YXM/
  * LEVEL: MEDIUM
  * Correctness:	100%
- * Performance:	0%
- * Task score:	50%
+ * Performance:	100%
+ * Task score:	100%
  */
 function solution($A)
 {
