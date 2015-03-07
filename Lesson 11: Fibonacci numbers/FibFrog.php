@@ -79,133 +79,103 @@ Elements of input arrays can be modified.
 */
 
 /*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demoMRP2YA-YXM/
- * LEVEL: MEDIUM
+ * CODILITY ANALYSIS: https://codility.com/demo/results/demo7ZY5DF-Q46/
+ * LEVEL: HARD
  * Correctness:	100%
- * Performance:	100%
- * Task score:	100%
+ * Performance:	0%
+ * Task score:	50%
  */
 function solution($A)
 {
-	// jump positions which contain leaf, and are Fibonnaci number
-	// contains position, and number of jumps to reach it
-	$fibPositions = array();
-	// minimum number of jumps for frog to get to other the side of the river
-	$minJumps = null;
-
-	// $A represent consecutive positions from 0 to N − 1, 
-	// we will add last N position, which represents the other side of the river
+	// $A represents consecutive positions from 0 to N − 1, 
+	// we will add last N position, which represents the other bank of the river
 	array_push($A, 1);
-	// the other side of the river position
-	end($A);
-	$endPosition = key($A);
-	// valid frog jump Fibonacci distances, from 1 to river width
-	$validFibonacciDistances = getValidFibonacciDistances(count($A));
+	// valid frog jump Fibonacci distances, in range from 1 to full river width,
+	// key represents Fibonacci number/distance, and value is K-th number, 
+	// array is reversed for later condition speed
+	$validFibonacciDistances = array_flip(getValidFibonacciDistances(count($A)));
 
-	for($i = 0; $i < count($A); $i++)
+	// minimum number of jumps for frog to get to the other bank of the river
+	$minJumps = null;
+	// Fibonacci's minimum jumps to reach specific position 
+	// array(position => made jumps to reach position)
+	$fibJumps = array();
+	// first position 
+	$fibJumps[-1] = 0;
+	
+	// we are using the breadth first search until 
+	// we find minimum number of jumps to reach other bank of the river
+	$jumps = 0;
+	// all possible positions which are reached after every jump
+	$allReachedPositions = array();
+	while(!empty($fibJumps) && !$minJumps)
 	{
-		// if there is leaf on this position, we must check is it Fibonnaci number,
-		// because the frog can only jump to F(K) position
-		if($A[$i] === 1)
+		// made number of jumps to reach current position
+		$madeJumps = $fibJumps;
+		$allReachedPositions += $fibJumps;
+		unset($fibJumps);
+		
+		// new number of jumps to reach further positions
+		$fibJumps = array();
+		foreach($madeJumps as $reachedPosition => $jumpsCount)
 		{
-			// checking if frog can jump from start position to current position
-			if(isFrogJumpValid($i + 1, $validFibonacciDistances))
+			// starting position is where the frog last stopped
+			for($pos = ($reachedPosition > 0) ? $reachedPosition : 0; $pos < count($A); $pos++)
 			{
-				$fibPositions[$i] = 1;
-				// if current position represents the other side of the river
-				if($i === $endPosition)
+				// checking if leaf exists on this position and
+				// and that position was not reached in less number of jumps
+				if($A[$pos] === 1 && !isset($allReachedPositions[$pos]))
 				{
-					$minJumps = 1;
-					break;
-				}
-			}
-
-			// if frog jumped at least once
-			if(!empty($fibPositions))
-			{
-				// finding all next possible jump positions from all so far 
-				// disovered Fibonacci leaves positions
-				foreach($fibPositions as $fibPosition => $jumps) 
-				{
-					// if frog can get from leaf position to the other side of the river
-					if(isFrogJumpValid($endPosition - $fibPosition, $validFibonacciDistances))
+					$jumpDistance = $pos - $reachedPosition;
+					// if jump distance is Fibonnaci number
+					if(isset($validFibonacciDistances[$jumpDistance]))
 					{
-						// one more jump from position to the other side
-						if($minJumps === null || ($jumps + 1) < $minJumps)
-							$minJumps = $jumps + 1;
+						// if position represents the other side of the bank 
+						if($pos === count($A) - 1)
+							$minJumps = $jumpsCount + 1;
+
+						$fibJumps[$pos] = $jumpsCount + 1;
 					}
-					// if jump distance is valid, it is Fibonacci number, 
-					// and position is not already reached with less or equal number of jumps
-					elseif(isFrogJumpValid($i - $fibPosition, $validFibonacciDistances) 
-						&& !array_key_exists($i, $fibPositions))
-						$fibPositions[$i] = $jumps + 1;
 				}
 			}
 		}
+
+		$jumps++;
 	}
 
-	// if frog cannot reach to the other side of the river	
-	if($minJumps === null)
-		return -1;
-	else
-		return $minJumps;
+	return !empty($minJumps) ? $minJumps : -1;
 }
 
 /**
- * Checks if frog jump distance is valid.
- * 
- * @param int $distance Jump distance
- * @return bool is jump valid
- */  
-function isFrogJumpValid($distance, $validFibonacciDistances)
-{
-	// jump distance can't be 0 or negative
-	if($distance <= 0)
-		return false;
-
-	// if jump belongs to permitted Fibonacci jumps
-	if(in_array($distance, $validFibonacciDistances))
-		return true;
-	else
-		return false;
-}
-
-/**
- * Gets frog jump Fibonacci distances. Jump distance can't be 0, 
- * so this function omits that Fibonnaci number.
- * Fibonacci numbers are calculated dynamically for speed.
- * 
+ * Calculates valid Fibonacci frog jump distances. Fibonacci sequence is calculated dynamically.
+ *  
  * @param int $riverWidth Represent river width
- * @return array Fibonacci jumps distances
+ * @return array $fibJumps Fibonacci jumps distances
  */
 function getValidFibonacciDistances($riverWidth)
 {
-	$fibNumbers = array();
+	$fibJumps = array();
 
-	if($riverWidth === 1)
-		$fibNumbers[1] = 1;
-	else
-	{
-		$fibNumbers[0] = 0;
-		$fibNumbers[1] = 1;
-		// represents last Fibonacci number in $fibNumbers array
-		$lastFibonacci = 0;
-		$i = 2;
-		// while last Fibonacci number is smaller than the distance
-		while($lastFibonacci <= $riverWidth)
-		{ 
-			$lastFibonacci = $fibNumbers[$i-1] + $fibNumbers[$i-2];
-			if($lastFibonacci <= $riverWidth)
-				$fibNumbers[] = $lastFibonacci;
+	$fibJumps[0] = 0;
+	$fibJumps[1] = 1;
+	$i = 2;
+	$fibonacci = 0;
+	// while last Fibonacci number is smaller than the distance
+	while($fibonacci <= $riverWidth)
+	{ 
+		$fibonacci = $fibJumps[$i-1] + $fibJumps[$i-2];
+		if($fibonacci <= $riverWidth)
+			$fibJumps[$i] = $fibonacci;
 
-			$i++;
-		}
-
-		// 0 is not valid jump distance
-		unset($fibNumbers[0]);
-		// F(1) = F(2), so we can remove F(1) because it is duplicate
-		unset($fibNumbers[1]);
+		$i++;
 	}
 
-	return $fibNumbers;
+	// F(0) = 0 => this is not a valid jump so we omit F(0)
+	unset($fibJumps[0]);
+	// F(1) = F(2) = 1 // this distance is duplicated, so we omit F(1)
+	unset($fibJumps[1]);
+
+	return $fibJumps;
 }
+
+solution([0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0]);
