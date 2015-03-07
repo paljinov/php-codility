@@ -64,7 +64,7 @@ Elements of input arrays can be modified.
 */
 
 /*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demoA4XK7P-PBY/
+ * CODILITY ANALYSIS: https://codility.com/demo/results/demo75V3WS-B6P/
  * LEVEL: MEDIUM
  * Correctness:	100%
  * Performance:	25%
