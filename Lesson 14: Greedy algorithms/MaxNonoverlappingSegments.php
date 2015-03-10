@@ -21,9 +21,9 @@ For example, consider arrays A, B such that:
 
 The segments are shown in the figure below.
 
-			 1 				   3
-        *---------*			   *
-  		0 				 2	     4
+	     1 		       3
+        *---------*	       *
+  	0 		 2	 4
 *---------------*      *---*   *---*
 
 The size of a non-overlapping set containing a maximal number of segments is 3. For example, 
