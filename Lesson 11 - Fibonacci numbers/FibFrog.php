@@ -79,68 +79,54 @@ Elements of input arrays can be modified.
 */
 
 /*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demo7ZY5DF-Q46/
+ * CODILITY ANALYSIS: https://codility.com/demo/results/demoGG84CK-8B4/
  * LEVEL: HARD
  * Correctness:	100%
- * Performance:	0%
- * Task score:	50%
+ * Performance:	100%
+ * Task score:	100%
  */
 function solution($A)
 {
-	// $A represents consecutive positions from 0 to N − 1, 
+	// $A represents consecutive positions from 0 to N − 1,
 	// we will add last N position, which represents the other bank of the river
 	array_push($A, 1);
+	// number of positions
+	$N = count($A);
 	// valid frog jump Fibonacci distances, in range from 1 to full river width,
 	// key represents Fibonacci number/distance, and value is K-th number, 
 	// array is reversed for later condition speed
-	$validFibonacciDistances = array_flip(getValidFibonacciDistances(count($A)));
+	$validFibonacciDistances = array_flip(getValidFibonacciDistances($N));
 
 	// minimum number of jumps for frog to get to the other bank of the river
 	$minJumps = null;
-	// Fibonacci's minimum jumps to reach specific position 
-	// array(position => made jumps to reach position)
-	$fibJumps = array();
-	// first position 
-	$fibJumps[-1] = 0;
-	
-	// we are using the breadth first search until 
-	// we find minimum number of jumps to reach other bank of the river
-	$jumps = 0;
-	// all possible positions which are reached after every jump
-	$allReachedPositions = array();
-	while(!empty($fibJumps) && !$minJumps)
-	{
-		// made number of jumps to reach current position
-		$madeJumps = $fibJumps;
-		$allReachedPositions += $fibJumps;
-		unset($fibJumps);
-		
-		// new number of jumps to reach further positions
-		$fibJumps = array();
-		foreach($madeJumps as $reachedPosition => $jumpsCount)
-		{
-			// starting position is where the frog last stopped
-			for($pos = ($reachedPosition > 0) ? $reachedPosition : 0; $pos < count($A); $pos++)
-			{
-				// checking if leaf exists on this position and
-				// and that position was not reached in less number of jumps
-				if($A[$pos] === 1 && !isset($allReachedPositions[$pos]))
-				{
-					$jumpDistance = $pos - $reachedPosition;
-					// if jump distance is Fibonnaci number
-					if(isset($validFibonacciDistances[$jumpDistance]))
-					{
-						// if position represents the other side of the bank 
-						if($pos === count($A) - 1)
-							$minJumps = $jumpsCount + 1;
+	// minimum number of jumps to reach some Fibonnaci distance
+	$jumps = array();
+	// at start, frog is at position -1 with 0 jumps
+	$jumps[-1] = 0;
 
-						$fibJumps[$pos] = $jumpsCount + 1;
-					}
-				}
+	// iterating while all jump combinations are not iterated, and while minimum number of jumps is not found
+	while($jumps && is_null($minJumps))
+	{
+		$currentPosition = key($jumps);
+		$jumpCount = current($jumps);
+
+		// seeking for next possible positions using Breadth First Search algorithm
+		foreach($validFibonacciDistances as $fibonnaciJump => $forFibonnaciNumber)
+		{
+			$nextPosition = $currentPosition + $fibonnaciJump;
+			// if position is not bigger than other bank of the river position,
+			// has a leaf, and represents Fibonnaci distance,
+			if(($nextPosition <= $N - 1) && $A[$nextPosition] === 1 && !isset($jumps[$nextPosition]))
+			{
+				$jumps[$nextPosition] = $jumpCount + 1;
+				// if position represents other bank of the river
+				if($nextPosition === $N - 1)
+					$minJumps = $jumps[$nextPosition];
 			}
 		}
 
-		$jumps++;
+		// current position is processed
+		unset($jumps[$currentPosition]);
 	}
 
 	return !empty($minJumps) ? $minJumps : -1;
