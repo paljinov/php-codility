@@ -79,7 +79,7 @@ Elements of input arrays can be modified.
 */
 
 /*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demoGG84CK-8B4/
+ * CODILITY ANALYSIS: https://codility.com/demo/results/demo2NGVWM-CS4/
  * LEVEL: HARD
  * Correctness:	100%
  * Performance:	100%
@@ -99,7 +99,7 @@ function solution($A)
 
 	// minimum number of jumps for frog to get to the other bank of the river
 	$minJumps = null;
-	// minimum number of jumps to reach some Fibonnaci distance
+	// minimum number of jumps to reach some Fibonacci distance
 	$jumps = array();
 	// at start, frog is at position -1 with 0 jumps
 	$jumps[-1] = 0;
@@ -111,11 +111,11 @@ function solution($A)
 		$jumpCount = current($jumps);
 
 		// seeking for next possible positions using Breadth First Search algorithm
-		foreach($validFibonacciDistances as $fibonnaciJump => $forFibonnaciNumber)
+		foreach($validFibonacciDistances as $fibonacciJump => $forFibonnaciNumber)
 		{
-			$nextPosition = $currentPosition + $fibonnaciJump;
+			$nextPosition = $currentPosition + $fibonacciJump;
 			// if position is not bigger than other bank of the river position,
-			// has a leaf, and represents Fibonnaci distance,
+			// has a leaf, and represents Fibonacci distance,
 			if(($nextPosition <= $N - 1) && $A[$nextPosition] === 1 && !isset($jumps[$nextPosition]))
 			{
 				$jumps[$nextPosition] = $jumpCount + 1;
