@@ -103,7 +103,7 @@ function solution($A, $B)
  *
  * @param $MAX_RUNGS Maximum number of rungs in array $A
  * @param $MIN_P Minimum modulo P
- * @param $MIN_P Maximum modulo P
+ * @param $MAX_P Maximum modulo P
  *
  * @return $cache array[P][climb_combinations_for_number_of_rungs]
  */
