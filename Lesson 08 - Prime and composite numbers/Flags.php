@@ -27,6 +27,9 @@ You are going on a trip to a range of mountains whose relative heights are repre
 as shown in a figure below. You have to choose how many flags you should take with you. The goal 
 is to set the maximum number of flags on the peaks, according to certain rules.
 
+PEAKS:
+https://codility-frontend-prod.s3.amazonaws.com/media/task_img/flags/media/auto/mpd4a55575fdd9738489d6c0b8b544f648.png
+
 Flags can only be set on peaks. What's more, if you take K flags, then the distance between any two 
 flags should be greater than or equal to K. The distance between indices P and Q is the absolute value |P - Q|.
 
