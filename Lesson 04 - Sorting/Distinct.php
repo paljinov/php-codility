@@ -30,7 +30,7 @@ Elements of input arrays can be modified.
 */
 
 /*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demo8CTQH9-EF6/
+ * CODILITY ANALYSIS: https://codility.com/demo/results/demoSA5K6M-E6Z/
  * LEVEL: EASY
  * Correctness:	100%
  * Performance:	100%
@@ -39,7 +39,7 @@ Elements of input arrays can be modified.
 function solution($A) 
 {
 	// this can be also solved with 
-	// return count(array_unique($A));
+	// return count(array_flip(array_flip(array_reverse($A, true))));
 
 	// array which contains distinct values of array $A
 	$distinct = array();
