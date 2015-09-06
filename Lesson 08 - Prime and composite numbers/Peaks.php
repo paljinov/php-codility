@@ -90,11 +90,11 @@ Elements of input arrays can be modified.
 */
 
 /*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demoWHQENU-HAC/
+ * CODILITY ANALYSIS: https://codility.com/demo/results/demo5R8JRF-5D5/
  * LEVEL: MEDIUM
  * Correctness:	100%
- * Performance:	80%
- * Task score:	90%
+ * Performance:	100%
+ * Task score:	100%
  */
 function solution($A)
 {
@@ -121,25 +121,26 @@ function solution($A)
 		// we iterate through every possible block size
 		for($i = $blockSize; $i <= $N; $i += $blockSize)
 		{
-			// first block
+			// first block, we want to include first right block element
 			if($i === $blockSize)
 			{
-				$offset = 0;
-				$length = $blockSize + 1;
+				$blockStartPosition = 0;
+				$blockEndPosition = $blockSize;
 			}
-			// last block
+			// last block, we want to include last left block element
 			elseif($i === $N)
 			{
-				$offset = $N - $blockSize - 1;
-				$length = $blockSize + 1;
+				$blockStartPosition = ($N - 1) - $blockSize;
+				$blockEndPosition = $N - 1;
 			}
+			// we want to include last element of left block and first element of right block
 			else
 			{
-				$offset = $i - $blockSize - 1;
-				$length = $blockSize + 2;
+				$blockStartPosition = ($i - 1) - $blockSize;
+				$blockEndPosition = ($i - 1) + 1;
 			}
 
-			$blockHasPeak = isPeakInBlock($peakOnPosition, $offset, $offset + $length);
+			$blockHasPeak = isPeakInBlock($peakOnPosition, $blockStartPosition, $blockEndPosition);
 			// if block doesn't have a peak
 			if(!$blockHasPeak)
 			{
@@ -203,12 +204,12 @@ function findDivisors($N)
  * Does block contain a peak.
  * 
  * @param int[] $peakOnPosition Positions with peak
- * @param int $blockStart First block position
- * @param int $blockEnd Last block position
+ * @param int $blockStartPosition First block position
+ * @param int $blockEndPosition Last block position
  * 
  * @return boolean
  */
-function isPeakInBlock($peakOnPosition, $blockStart, $blockEnd)
+function isPeakInBlock($peakOnPosition, $blockStartPosition, $blockEndPosition)
 {
 	$beg = 0;
 	$end = count($peakOnPosition) - 1;
@@ -219,12 +220,12 @@ function isPeakInBlock($peakOnPosition, $blockStart, $blockEnd)
 		$mid = (int)(($beg + $end) / 2);
 
 		// first and last element can't be peaks
-		if($peakOnPosition[$mid] > $blockStart && $peakOnPosition[$mid] < $blockEnd)
+		if($peakOnPosition[$mid] > $blockStartPosition && $peakOnPosition[$mid] < $blockEndPosition)
 		{
 			$isPeakInBlock = true;
 			break;
 		}
-		elseif($peakOnPosition[$mid] <= $blockStart)
+		elseif($peakOnPosition[$mid] <= $blockStartPosition)
 			$beg = $mid + 1;
 		else
 			$end = $mid - 1;
