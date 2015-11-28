@@ -39,7 +39,7 @@ Elements of input arrays can be modified.
 function solution($A) 
 {
 	// this can be also solved with 
-	// return count(array_flip(array_flip(array_reverse($A, true))));
+	// return return count(array_count_values($A));
 
 	// array which contains distinct values of array $A
 	$distinct = array();
