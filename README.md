@@ -1,13 +1,14 @@
 php-codility
 ============
 
-PHP solutions to codility tasks from their lessons.
+PHP solutions to **Codility Limited**: https://codility.com/ tasks from their lessons and challenges.  
 
-Codility lessons: https://codility.com/programmers/lessons/
+Codility lessons: https://codility.com/programmers/lessons/  
+Codility challenges: https://codility.com/programmers/challenges/  
 
 Introduction
 ============
-This repository represents my solutions to codility algorithmic tasks. The plan is to solve easier tasks first, and gradually solve all, even the hardest tasks at last. All tasks are considered completed only when when their performance is optimal, at best possible big O time and space complexity.
+All tasks are **Codility Limited** ownership. This repository represents my solutions to **Codility Limited** algorithmic tasks. The plan is to solve easier tasks first, and gradually solve all, even the hardest tasks at last. All tasks are considered completed only when when their performance is optimal, at best possible big O time and space complexity.
 
 Directory structure example
 ============
