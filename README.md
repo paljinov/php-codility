@@ -57,7 +57,7 @@ According to the [Codility Programmer Terms of Service](https://codility.com/ter
 
 ---
 
-Copyright (c) 2015 - 2016 Pave Aljinović
+Copyright (c) 2015 - 2016 Pave Aljinović  
 Licensed under the [MIT License](https://github.com/paljinov/php-codility/blob/master/LICENSE.md)
 
 
