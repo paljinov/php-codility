@@ -29,27 +29,15 @@ In your solution, focus on correctness. The performance of your solution will no
  * Performance: not assessed
  * Task score:	100%
  */
-function solution($A, $K)
-{
-	// shifted array
-	$shifted = array();
+function solution($A, $K) {
 
-	// number of elements
-	$N = count($A);
-	// if $K is bigger than $N, on $N-th shift we would be on starting position,
-	// so it makes sense only to do smaller number of shifts than $N size
-	$shiftedPositions = $K % $N;
-
-	// initially first element position is 0, but at the end it will be K
-	for($i = 0; $i < $N; $i++)
-	{
-		$position = $i + $shiftedPositions;
-		if($position > $N - 1)
-			$position = $position - $N;
-
-		$shifted[$position] = $A[$i];
+	if (! empty($A)) {
+	     for ($i = 1; $i <= $K; $i++) {
+	     	$lastElement = array_pop($A);
+	     	$Atmp[0] = $lastElement;
+	     	$A = array_merge($Atmp, $A);
+	     }
 	}
-
-	ksort($shifted);
-	return $shifted;
+    
+     return $A;
 }
