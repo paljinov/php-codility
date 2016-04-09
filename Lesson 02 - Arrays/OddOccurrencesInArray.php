@@ -49,21 +49,15 @@ Elements of input arrays can be modified.
  * Performance: 100%
  * Task score:	100%
  */
-function solution($A)
-{
-	// we'll count repetitions, integer which is not repeated is unpaired element
-	$integerCount = array();
-	foreach($A as $value)
-	{
-		if(!isset($integerCount[$value]))
-			$integerCount[$value] = 0;
+function odd($var) {
+	return($var & 1);
+}
 
-		$integerCount[$value]++;
-		// if we have pair, we can remove it so only unpaired element will remain in the array
-		if($integerCount[$value] == 2)
-			unset($integerCount[$value]);
-	}
-
-	$unpaired = key($integerCount);
-	return $unpaired;
+function solution($A) {
+	//Count how many times an integer appears in the array
+	$A = array_count_values($A);
+	//Remove all values COUNT where the quantity is even 
+	$A = array_filter($A, "odd");
+	//Return the first index which is the number without a pair
+	return key($A);
 }
