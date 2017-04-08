@@ -42,28 +42,36 @@ Complexity:
 Elements of input arrays can be modified.
 */
 
-/*
- * CODILITY ANALYSIS: https://codility.com/demo/results/training5EUJMS-ZKW/
+/**
+ * OddOccurrencesInArray task.
+ *
+ * CODILITY ANALYSIS: https://codility.com/demo/results/trainingQ3FJW8-XM2/
  * LEVEL: EASY
- * Correctness:	100%
+ * Correctness: 100%
  * Performance: 100%
- * Task score:	100%
+ * Task score:  100%
+ *
+ * @param array $A Non-empty zero-indexed array A consisting of N integers
+ *
+ * @return int Value of the unpaired element
  */
 function solution($A)
 {
-	// we'll count repetitions, integer which is not repeated is unpaired element
-	$integerCount = array();
-	foreach($A as $value)
-	{
-		if(!isset($integerCount[$value]))
-			$integerCount[$value] = 0;
+    // Occurrences of integer in array
+    $occurences = [];
 
-		$integerCount[$value]++;
-		// if we have pair, we can remove it so only unpaired element will remain in the array
-		if($integerCount[$value] == 2)
-			unset($integerCount[$value]);
-	}
+    // Searching for unpaired integer
+    foreach ($A as $integer) {
+        if (!isset($occurences[$integer])) {
+            // If integer didn't appeared till now
+            $occurences[$integer] = 1;
+        } else {
+            // If pair is found, it is removed so only unpaired integer will remain
+            unset($occurences[$integer]);
+        }
+    }
 
-	$unpaired = key($integerCount);
-	return $unpaired;
+    $unpairedInteger = key($occurences);
+
+    return $unpairedInteger;
 }
