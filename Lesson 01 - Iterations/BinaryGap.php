@@ -27,34 +27,41 @@ Complexity:
         expected worst-case space complexity is O(1).
 */
 
-/*
- * CODILITY ANALYSIS: https://codility.com/demo/results/trainingRWSKUF-PFJ/
+/**
+ * BinaryGap task.
+ *
+ * CODILITY ANALYSIS: https://codility.com/demo/results/trainingEFRHZ8-7J5/
  * LEVEL: EASY
- * Correctness:	100%
+ * Correctness: 100%
  * Performance: not assessed
- * Task score:	100%
+ * Task score:  100%
+ *
+ * @param int $N Positive integer N
+ *
+ * @return int Length of longest binary gap
  */
 function solution($N)
 {
-	// binary gap
-	$binaryGap = 0;
-	// integer binary represenation
-	$binary = decbin($N);
+    // Length of longest binary gap
+    $binaryGapLength = 0;
+    // Binary representation of the given number
+    $binaryNumber = decbin($N);
 
-	// we explode string by character '1'
-	$exploded = explode('1', $binary);
-	// binary gap must be surrounded by ones at both ends,
-	// so there shouldn't be zeroes after last character '1' occurrence, and before first character '1' occurrence
-	unset($exploded[count($exploded) - 1]);
-	unset($exploded[0]);
+    // Binary number is splitted by character '1'
+    $exploded = explode('1', $binaryNumber);
 
-	// we are searching for longest zeroes pattern
-	foreach($exploded as $zeroes)
-	{
-		$length = strlen($zeroes);
-		if($length > $binaryGap)
-			$binaryGap = $length;
-	}
+    // Binary gap must be surrounded by ones at both ends, so there shouldn't be zeroes after last character '1'
+    // occurrence, and before first character '1' occurrence
+    unset($exploded[count($exploded) - 1]);
+    unset($exploded[0]);
 
-	return $binaryGap;
+    // Searching for length of longest binary gap
+    foreach ($exploded as $zeroes) {
+        $length = strlen($zeroes);
+        if ($length > $binaryGapLength) {
+            $binaryGapLength = $length;
+        }
+    }
+
+    return $binaryGapLength;
 }
