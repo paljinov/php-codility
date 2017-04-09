@@ -2,13 +2,13 @@
 
 /*
 A small frog wants to get to the other side of a river.
-The frog is currently located at position 0, and wants to get to position X. 
+The frog is currently located at position 0, and wants to get to position X.
 Leaves fall from a tree onto the surface of the river.
 
 You are given a non-empty zero-indexed array A consisting of N integers representing the falling leaves.
 A[K] represents the position where one leaf falls at time K, measured in minutes.
 
-The goal is to find the earliest time when the frog can jump to the other side of the river. 
+The goal is to find the earliest time when the frog can jump to the other side of the river.
 The frog can cross only when leaves appear at every position across the river from 1 to X.
 
 For example, you are given integer X = 5 and array A such that:
@@ -22,14 +22,14 @@ For example, you are given integer X = 5 and array A such that:
   A[6] = 5
   A[7] = 4
 
-In minute 6, a leaf falls into position 5. This is the earliest time when leaves appear in 
+In minute 6, a leaf falls into position 5. This is the earliest time when leaves appear in
 every position across the river.
 
 Write a function:
 
-    function solution($X, $A); 
+    function solution($X, $A);
 
-that, given a non-empty zero-indexed array A consisting of N integers and integer X, 
+that, given a non-empty zero-indexed array A consisting of N integers and integer X,
 returns the earliest time when the frog can jump to the other side of the river.
 
 If the frog is never able to jump to the other side of the river, the function should return −1.
@@ -51,37 +51,47 @@ the function should return 6, as explained above. Assume that:
 
 Complexity:
         expected worst-case time complexity is O(N);
-        expected worst-case space complexity is O(X), 
+        expected worst-case space complexity is O(X),
         beyond input storage (not counting the storage required for input arguments).
 
 Elements of input arrays can be modified.
 */
 
-/*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demo6CU22E-UPJ/
+/**
+ * FrogRiverOne task.
+ *
+ * CODILITY ANALYSIS: https://codility.com/demo/results/trainingYZ25GW-9CU/
  * LEVEL: EASY
- * Correctness:	100%
- * Performance:	100%
- * Task score:	100%
+ * Correctness: 100%
+ * Performance: 100%
+ * Task score:  100%
+ *
+ * @param int $X Destionation position X
+ * @param array Non-empty zero-indexed array A
+ *
+ * @return int Earliest time when the frog can jump to the other side of the river
  */
-function solution($X, $A) 
+function solution($X, $A)
 {
-	// positions on the river where leaf has already fallen
-	$coveredPositions = array();
-	for($i = 0; $i < count($A); $i++)
-	{
-		// checking when the leaf has covered the position, 
-		// we are interested only to get to end position $X
-		if(empty($coveredPositions[$A[$i]]) && $A[$i] <= $X)
-		{
-			// $A[$i] is position, $i is the minute in which the position is covered
-			$coveredPositions[$A[$i]] = $i;
-			// if all positions to reach end positions are covered, we return minute when that happend
-			if(count($coveredPositions) === $X)
-				return $i;
-		}
-	}
+    // Earliest time when the frog can jump to the other side of the river
+    $earliestTime = -1;
+    // Positions on the river where leaf has already fallen
+    $coveredPositions = [];
 
-	// if end position is not reached
-	return -1;
+    // Iterating through the falling leaves positions with their falling times in minutes
+    foreach ($A as $K => $position) {
+        // Checking when the leaf has covered the position,
+        // we are interested only to get to the end position $X
+        if (!isset($coveredPositions[$position]) && $position <= $X) {
+            $coveredPositions[$position] = $K;
+            // If all positions to reach the end position are covered, we return minute when that happend
+            if (count($coveredPositions) === $X) {
+                $earliestTime = $K;
+                break;
+            }
+        }
+    }
+
+    // if end position is not reached
+    return $earliestTime;
 }
