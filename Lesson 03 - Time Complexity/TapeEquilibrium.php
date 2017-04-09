@@ -3,10 +3,10 @@
 /*
 A non-empty zero-indexed array A consisting of N integers is given. Array A represents numbers on a tape.
 
-Any integer P, such that 0 < P < N, splits this tape into two non-empty parts: 
+Any integer P, such that 0 < P < N, splits this tape into two non-empty parts:
 A[0], A[1], ..., A[P − 1] and A[P], A[P + 1], ..., A[N − 1].
 
-The difference between the two parts is the value of: 
+The difference between the two parts is the value of:
 |(A[0] + A[1] + ... + A[P − 1]) − (A[P] + A[P + 1] + ... + A[N − 1])|
 
 In other words, it is the absolute difference between the sum of the first part and the sum of the second part.
@@ -27,7 +27,7 @@ We can split this tape in four places:
 
 Write a function:
 
-    function solution($A); 
+    function solution($A);
 
 that, given a non-empty zero-indexed array A of N integers, returns the minimal difference that can be achieved.
 
@@ -47,39 +47,44 @@ Assume that:
 
 Complexity:
         expected worst-case time complexity is O(N);
-        expected worst-case space complexity is O(N), 
+        expected worst-case space complexity is O(N),
         beyond input storage (not counting the storage required for input arguments).
 
 Elements of input arrays can be modified.
 */
 
 /**
- * CODILITY ANALYSIS: https://codility.com/demo/results/demoP7SCSC-ACG/
+ * TapeEquilibrium task.
+ *
+ * CODILITY ANALYSIS: https://codility.com/demo/results/trainingK35VGH-6WK/
  * LEVEL: EASY
- * Correctness:	100%
- * Performance:	100%
- * Task score:	100%
+ * Correctness: 100%
+ * Performance: 100%
+ * Task score:  100%
+ *
+ * @param int $A A non-empty zero-indexed array A
+ *
+ * @param int The minimal difference that can be achieved
  */
-function solution($A) 
+function solution($A)
 {
-	// left sum after array $A splits, initialized to 0
-	$leftSum = 0;
-	// right sum after array $A splits, initialized to sum of all array $A elements
-	$rightSum = array_sum($A);
-	// minimal difference between left and right sum
-	$diff = null;
+    // Left sum after array $A splits, initialized to 0
+    $leftSum = 0;
+    // Right sum after array $A splits, initialized to sum of all array $A elements
+    $rightSum = array_sum($A);
+    // Minimal difference between left and right sum
+    $minDiff = null;
 
-	// at least one element needs to be on right side,
-	// that is the reason why we iterate to "count($A) - 1"
-	for($i = 0; $i < count($A) - 1; $i++) 
-	{
-		$leftSum += $A[$i];
-		$rightSum -= $A[$i];
+    // At least one element needs to be on right side, that is the reason why we iterate to 'count($A) - 1'
+    for ($i = 0; $i < count($A) - 1; $i++) {
+        $leftSum += $A[$i];
+        $rightSum -= $A[$i];
 
-		// if diff is uninitialized, or difference is new absolute minimum difference
-		if($diff === null || abs($leftSum - $rightSum) < $diff)
-			$diff = abs($leftSum - $rightSum);
-	}
+        // If minimal difference is not set, or difference is new absolute minimal difference
+        if (!isset($minDiff) || abs($leftSum - $rightSum) < $minDiff) {
+            $minDiff = abs($leftSum - $rightSum);
+        }
+    }
 
-	return $diff;
+    return $minDiff;
 }
