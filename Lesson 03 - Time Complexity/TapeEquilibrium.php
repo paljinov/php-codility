@@ -56,13 +56,13 @@ Elements of input arrays can be modified.
 /**
  * TapeEquilibrium task.
  *
- * CODILITY ANALYSIS: https://codility.com/demo/results/trainingK35VGH-6WK/
+ * CODILITY ANALYSIS: https://codility.com/demo/results/trainingH7TXGN-Z6K/
  * LEVEL: EASY
  * Correctness: 100%
  * Performance: 100%
  * Task score:  100%
  *
- * @param int $A A non-empty zero-indexed array A
+ * @param array $A Non-empty zero-indexed array A
  *
  * @param int The minimal difference that can be achieved
  */
