@@ -35,9 +35,9 @@ The goal is to calculate the value of every counter after all operations.
 
 Write a function:
 
-    function solution($N, $A); 
+    function solution($N, $A);
 
-that, given an integer N and a non-empty zero-indexed array A consisting of M integers, 
+that, given an integer N and a non-empty zero-indexed array A consisting of M integers,
 returns a sequence of integers representing the values of the counters.
 
 The sequence should be returned as:
@@ -65,57 +65,65 @@ Assume that:
 
 Complexity:
         expected worst-case time complexity is O(N+M);
-        expected worst-case space complexity is O(N), 
+        expected worst-case space complexity is O(N),
         beyond input storage (not counting the storage required for input arguments).
 
 Elements of input arrays can be modified.
 */
 
-/*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demoEMA2W7-J48/
+/**
+ * MaxCounters task.
+ *
+ * CODILITY ANALYSIS: https://codility.com/demo/results/trainingM72WFV-FTW/
  * LEVEL: MEDIUM
- * Correctness:	100%
- * Performance:	100%
- * Task score:	100%
+ * Correctness: 100%
+ * Performance: 100%
+ * Task score:  100%
+ *
+ * @param int $N N counters
+ * @param int[] $A Non-empty zero-indexed array A of M integers
+ *
+ * @return int[] Final values of counters
  */
 function solution($N, $A)
 {
-	// N counters, all have value 0 at start
-	$counters = array();
-	// counters initialization
-	for($i = 0; $i < $N; $i++)
-		$counters[$i] = 0;
+    // N counters, all have value 0 at start
+    $counters = array_fill(0, $N, 0);
+    // Array $A consists of M integers
+    $M = count($A);
 
-	$M = count($A);
-	// used for setting all counters to max counter value, which becomes new lowest counters value
-	$newLowestCountersValue = 0;
-	// used for tracking max counter value
-	$maxCounterValue = 0;
-	// iteration through each array $A value
-	for($i = 0; $i < $M; $i++)
-	{
-		// if array element value is N + 1 then operation is max counter
-		if($A[$i] === ($N + 1))
-			$newLowestCountersValue = $maxCounterValue;
-		// else operation is increase by 1
-		else
-		{
-			// if counter value is lower then maximum counter value, 
-			// it must be set to max value
-			if($counters[$A[$i] - 1] < $newLowestCountersValue)
-				$counters[$A[$i] - 1] = $newLowestCountersValue;
+    // Used for setting all counters to max counter value, which becomes new lowest counters value
+    $newLowestCountersValue = 0;
+    // Used for tracking max counter value
+    $maxCounterValue = 0;
 
-			$counters[$A[$i] - 1]++;
-			// we are tracking maximum counter, if it has changed
-			if($counters[$A[$i] - 1] > $maxCounterValue)
-				$maxCounterValue = $counters[$A[$i] - 1];
-		}
-	}
+    // Iteration through each array $A value
+    for ($i = 0; $i < $M; $i++) {
+        if ($A[$i] === ($N + 1)) {
+            // If array integer value is N + 1 then operation is max counter
+            $newLowestCountersValue = $maxCounterValue;
+        } else {
+            // Else operation is increase by 1
 
-	// updating counters which are lower than maximum counter value
-	for($i = 0; $i < $N; $i++)
-		if($counters[$i] < $newLowestCountersValue)
-			$counters[$i] = $newLowestCountersValue;
+            // If counter value is lower than maximum counter value, it must be set to max value
+            if ($counters[$A[$i] - 1] < $newLowestCountersValue) {
+                $counters[$A[$i] - 1] = $newLowestCountersValue;
+            }
 
-	return $counters;
+            $counters[$A[$i] - 1]++;
+            // Tracking if maximum counter value has changed
+            if ($counters[$A[$i] - 1] > $maxCounterValue) {
+                $maxCounterValue = $counters[$A[$i] - 1];
+            }
+        }
+    }
+
+    // Updating counters which are lower than maximum counter value
+    for ($i = 0; $i < $N; $i++) {
+        if ($counters[$i] < $newLowestCountersValue) {
+            $counters[$i] = $newLowestCountersValue;
+        }
+    }
+
+    return $counters;
 }
