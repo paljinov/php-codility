@@ -1,17 +1,17 @@
 <?php
 
 /*
-A small frog wants to get to the other side of the road. The frog is currently located 
-at position X and wants to get to a position greater than or equal to Y. 
+A small frog wants to get to the other side of the road. The frog is currently located
+at position X and wants to get to a position greater than or equal to Y.
 The small frog always jumps a fixed distance, D.
 
 Count the minimal number of jumps that the small frog must perform to reach its target.
 
 Write a function:
 
-    function solution($X, $Y, $D); 
+    function solution($X, $Y, $D);
 
-that, given three integers X, Y and D, returns the minimal number of jumps 
+that, given three integers X, Y and D, returns the minimal number of jumps
 from position X to a position equal to or greater than Y.
 
 For example, given:
@@ -35,19 +35,27 @@ Complexity:
         expected worst-case space complexity is O(1).
 */
 
-/*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demoYPC9BY-8VW/
+/**
+ * FrogJmp task.
+ *
+ * CODILITY ANALYSIS: https://codility.com/demo/results/training56G4RN-ZUE/
  * LEVEL: EASY
- * Correctness:	100%
- * Performance:	100%
- * Task score:	100%
+ * Correctness: 100%
+ * Performance: 100%
+ * Task score:  100%
+ *
+ * @param int $X Frog current position X
+ * @param int $Y Minimal ending position Y
+ * @param int $D Frog jump fixed distance, D
+ *
+ * @return int Minimal number of jumps from position X to a position equal to or greater than Y
  */
 function solution($X, $Y, $D)
 {
-	// distance between end ($Y) and start ($X) position
-	$distance = $Y - $X;
-	// number of jumps needed to reach or surpass end position
-	$jumps = (int)ceil($distance / $D);
+    // Distance between end ($Y) and start ($X) position
+    $distance = $Y - $X;
+    // Number of jumps needed to reach or surpass end position
+    $jumps = (int) ceil($distance / $D);
 
-	return $jumps;
+    return $jumps;
 }
