@@ -3,14 +3,14 @@
 /*
 Write a function:
 
-    function solution($A, $B, $K); 
+    function solution($A, $B, $K);
 
-that, given three integers A, B and K, 
+that, given three integers A, B and K,
 returns the number of integers within the range [A..B] that are divisible by K, i.e.:
 
     { i : A ≤ i ≤ B, i mod K = 0 }
 
-For example, for A = 6, B = 11 and K = 2, your function should return 3, 
+For example, for A = 6, B = 11 and K = 2, your function should return 3,
 because there are three numbers divisible by 2 within the range [6..11], namely 6, 8 and 10.
 
 Assume that:
@@ -23,28 +23,38 @@ Complexity:
         expected worst-case space complexity is O(1).
 */
 
-/*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demoVHF97C-DJF/
- * LEVEL: MEDIUM
- * Correctness:	100%
- * Performance:	100%
- * Task score:	100%
+/**
+ * CountDiv task.
+ *
+ * CODILITY ANALYSIS: https://codility.com/demo/results/trainingW2VAHM-9PF/
+ * LEVEL: EASY
+ * Correctness: 100%
+ * Performance: 100%
+ * Task score:  100%
+ *
+ * @param int $A Start of the potential dividend range
+ * @param int $B End of the potential dividend range
+ * @param int $K divisor
+ *
+ * @return int The number of integers within the range [A..B] that are divisible by K
  */
 function solution($A, $B, $K)
 {
-	// divisible integers count
-	$divisibleIntegers = 0;
-	// number of divisible integers by K from 0 to A
-	$divisibleToLimitA = floor($A / $K);
-	// number of divisible integers by K from 0 to B
-	$divisibleToLimitB = floor($B / $K);
+    // The number of integers within the range [A..B] that are divisible by K
+    $divisibleByKInRange = 0;
 
- 	// if A is divisible by K
-	if($A % $K === 0)
-		$divisibleIntegers = $divisibleToLimitB - $divisibleToLimitA + 1;
-	// if A is not divisible by K
-	else
-		$divisibleIntegers = $divisibleToLimitB - $divisibleToLimitA;
+    // The number of dividends for divisor K from 0 to A
+    $divisibleByKFromZeroToA = (int) floor($A / $K);
+    // The number of dividends for divisor K from 0 to B
+    $divisibleByKFromZeroToB = (int) floor($B / $K);
 
-	return (int)$divisibleIntegers;
+    if ($A % $K === 0) {
+        // If A is divisible by K
+        $divisibleByKInRange = $divisibleByKFromZeroToB - $divisibleByKFromZeroToA + 1;
+    } else {
+        // if A is not divisible by K
+        $divisibleByKInRange = $divisibleByKFromZeroToB - $divisibleByKFromZeroToA;
+    }
+
+    return $divisibleByKInRange;
 }
