@@ -1,7 +1,7 @@
 <?php
 
 /*
-A zero-indexed array A consisting of N integers is given. 
+A zero-indexed array A consisting of N integers is given.
 A triplet (P, Q, R) is triangular if 0 ≤ P < Q < R < N and:
 
         A[P] + A[Q] > A[R],
@@ -17,10 +17,10 @@ Triplet (0, 2, 4) is triangular.
 
 Write a function:
 
-    function solution($A); 
+    function solution($A);
 
-that, given a zero-indexed array A consisting of N integers, 
-returns 1 if there exists a triangular triplet for this array and returns 0 otherwise. 
+that, given a zero-indexed array A consisting of N integers,
+returns 1 if there exists a triangular triplet for this array and returns 0 otherwise.
 For example, given array A such that:
 
   A[0] = 10    A[1] = 2    A[2] = 5
@@ -39,55 +39,63 @@ Assume that:
 
 Complexity:
         expected worst-case time complexity is O(N*log(N));
-        expected worst-case space complexity is O(N), 
+        expected worst-case space complexity is O(N),
         beyond input storage (not counting the storage required for input arguments).
 
 Elements of input arrays can be modified.
 */
 
-/*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demoJQK54Y-2BH/
+/**
+ * Triangle task.
+ *
+ * CODILITY ANALYSIS: https://codility.com/demo/results/trainingMZ5RSX-UUM/
  * LEVEL: EASY
  * Correctness:	100%
  * Performance:	100%
  * Task score:	100%
+ *
+ * @param int[] $A Zero-indexed array A consisting of N integers
+ *
+ * @return int 1 if there exists a triangular triplet for this array, 0 otherwise
  */
-function solution($A) 
+function solution($A)
 {
-	// we sort array $A in ascending order from minimum to maximum integer; if closest integers 
-	// don't fullfill triangular conditions, farther integers will not fulfill it also
-	// index association is not maintained because rule 0 ≤ P < Q < R < N is not important;
-	// namely the following rules cover every possible combination:
-	// A[P] + A[Q] > A[R]
-	// A[Q] + A[R] > A[P]
-	// A[R] + A[P] > A[Q]
-	sort($A);
-	$N = count($A);
+    // Array $A is sorted in descending order from maximal to minimal integer, because if closest integers
+    // don't fullfill triangular conditions, farther integers will not fulfill it also.
+    rsort($A);
 
-	$arrayEnd = false;
-	// while we haven't reached array end
-	while(!$arrayEnd)
-	{
-		$P = key($A);
-		// advance the internal array pointer of an array
-		next($A);
-		$Q = key($A);
-		next($A);
-		$R = key($A);
+    $isTripletTriangular = 0;
+    // Iterating through array $A, to check if at least one closest triplet is triangular
+    for ($i = 0; $i < count($A); $i++) {
+        if (isset($A[$i + 1])) {
+            $P = $A[$i];
+            $Q = $A[$i + 1];
+            $R = $A[$i + 2];
 
-		// if $Q and $R exist, we haven't reached array $A end
-		if($Q !== NULL && $R !== NULL)
-		{
-			// rewind the internal array pointer 1 place back
-			prev($A);
+            if (isTripletTriangular($P, $Q, $R)) {
+                $isTripletTriangular = 1;
+                break;
+            }
+        }
+    }
 
-			// if triangular conditions are matched
-			if($A[$P] + $A[$Q] > $A[$R] && $A[$Q] + $A[$R] > $A[$P] && $A[$R] + $A[$P] > $A[$Q])
-				return 1;
-		}
-		else
-			$arrayEnd = true;
-	}
+    return $isTripletTriangular;
+}
 
-	return 0;
+/**
+ * Checks is triple triangular.
+ *
+ * @param int $A
+ * @param int $B
+ * @param int $C
+ *
+ * @return bool
+ */
+function isTripletTriangular($P, $Q, $R): bool
+{
+    if ($P + $Q > $R && $P + $R > $Q && $Q + $R > $P) {
+        return true;
+    }
+
+    return false;
 }
