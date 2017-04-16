@@ -83,7 +83,7 @@ function solution($A)
 }
 
 /**
- * Checks is triple triangular.
+ * Checks is triplet triangular.
  *
  * @param int $A
  * @param int $B
