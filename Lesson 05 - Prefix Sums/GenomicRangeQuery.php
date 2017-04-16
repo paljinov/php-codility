@@ -147,7 +147,7 @@ function getSupportedNucleotideTypes(): array
  *
  * @param string $S Non-empty zero-indexed string S consisting of N characters
  *
- * @return int[] DNA sequence impact factors count to some position, array example:
+ * @return array DNA sequence impact factors count to some position, array structure:
  * [
  *      impact factor 1 => [number of occurences till and including the position 1, ... the position 2, ...]
  *      impact factor 2 => [number of occurences till and including the position 1, ... the position 2, ...]
