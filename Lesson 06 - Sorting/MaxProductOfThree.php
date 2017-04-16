@@ -1,7 +1,7 @@
 <?php
 
 /*
-A non-empty zero-indexed array A consisting of N integers is given. 
+A non-empty zero-indexed array A consisting of N integers is given.
 The product of triplet (P, Q, R) equates to A[P] * A[Q] * A[R] (0 ≤ P < Q < R < N).
 
 For example, array A such that:
@@ -23,7 +23,7 @@ Your goal is to find the maximal product of any triplet.
 
 Write a function:
 
-    function solution($A); 
+    function solution($A);
 
 that, given a non-empty zero-indexed array A, returns the value of the maximal product of any triplet.
 
@@ -44,63 +44,70 @@ Assume that:
 
 Complexity:
         expected worst-case time complexity is O(N*log(N));
-        expected worst-case space complexity is O(1), 
+        expected worst-case space complexity is O(1),
         beyond input storage (not counting the storage required for input arguments).
 
 Elements of input arrays can be modified.
 */
 
-/*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demoP77M64-52J/
+/**
+ * MaxProductOfThree task.
+ *
+ * CODILITY ANALYSIS: https://codility.com/demo/results/trainingNJU2UM-5YZ/
  * LEVEL: EASY
- * Correctness:	100%
- * Performance:	100%
- * Task score:	100%
+ * Correctness: 100%
+ * Performance: 100%
+ * Task score:  100%
+ *
+ * @param int[] $A Non-empty zero-indexed array A consisting of N integers
+ *
+ * @return int The maximal product of any triplet.
  */
-function solution($A) 
+function solution($A)
 {
-	// we sort array $A in ascending order from minimum to maximum integer
-	sort($A);
+    // Maximal product is initialized to product of first three integers
+    $maxProduct = array_product(array_slice($A, 0, 3));
+    // Array $A is sorted in descending order, from maximum to minimum integer
+    rsort($A);
 
-	// 3 biggest positive integers, if they exist, 0 which is neutral number is also included
-	$max3PositiveInclZero = array();
-	// 3 biggest negative integers, if they exist (three smallest absolute negative integers)
-	$max3Negative = array();
-	// 2 smallest negative integers, if they exist (two biggest absolute negative integers)
-	$min2Negative = array();
+    // Positive integers
+    $positive = array_filter($A, function ($integer) {
+        return $integer > 0;
+    });
+    // Zero integers
+    $zero = array_filter($A, function ($integer) {
+        return $integer == 0;
+    });
+    // Negative integers
+    $negative = array_filter($A, function ($integer) {
+        return $integer < 0;
+    });
 
-	// if there are positive integers, we get 3 biggest
-	for($i = count($A) - 1; $i >= count($A) - 3; $i--)
-		if($A[$i] >= 0)
-			$max3PositiveInclZero[] = $A[$i];
+    // If there are at least 3 positive integers
+    if (count($positive) >= 3) {
+        // If three largest integers make new maximal product
+        if(array_product(array_slice($positive, 0, 3)) > $maxProduct) {
+            $maxProduct = array_product(array_slice($A, 0, 3));
+        }
+    }
+    // If there are at least 2 negative integers and at least 1 positive integer
+    if (count($negative) >= 2 && count($positive) >= 1) {
+        // If two smallest negative integers (absolute largest) and largest positive integer make new maximal product
+        if ((array_product(array_slice($negative, -2, 2)) * $positive[0]) > $maxProduct) {
+            $maxProduct = array_product(array_slice($negative, -2, 2)) * $positive[0];
+        }
+    }
+    // If maximal product is still negative and there are zero integers
+    if ($maxProduct < 0 && count($zero)) {
+        $maxProduct = 0;
+    }
+    // If there are at least 3 negative integers
+    if (count($negative) >= 3) {
+        // If three largest negative integers (absolute smallest) make new maximal product
+        if (array_product(array_slice($negative, 0, 3)) > $maxProduct) {
+            $maxProduct = array_product(array_slice($negative, 0, 3));
+        }
+    }
 
-	// if there are no positive integers, we get 3 biggest negative integers
-	if(count($max3PositiveInclZero) === 0)
-	{
-		for($i = count($A) - 1; $i >= count($A) - 3; $i--)
-			if($A[$i] < 0)
-				$max3PositiveInclZero[] = $A[$i];
-	}
-	// if there are positive integers, we get 2 smallest negative integers if they exist
-	else
-	{
-		for($i = 0; $i <= 1; $i++) 
-			if($A[$i] < 0)
-				$min2Negative[] = $A[$i];
-	}
-
-	// maximal product of any triplet
-	$maxProduct = null;
-	// array which contains all relevant integers for maximal product of triplets combinations
-	$r = array_merge($min2Negative, $max3Negative, $max3PositiveInclZero);
-	for($i = 0; $i < count($r); $i++)
-		for($j = $i + 1; $j < count($r); $j++)
-			for($k = $j + 1; $k < count($r); $k++)
-			{
-				$currentProduct = $r[$i] * $r[$j] * $r[$k];
-				if(empty($maxProduct) || $currentProduct > $maxProduct)
-					$maxProduct = $currentProduct;
-			}
-
-	return $maxProduct;
+    return $maxProduct;
 }
