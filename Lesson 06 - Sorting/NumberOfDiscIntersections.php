@@ -1,109 +1,112 @@
 <?php
 
 /*
-Given an array A of N integers, we draw N discs in a 2D plane such that 
-the I-th disc is centered on (0,I) and has a radius of A[I]. 
-We say that the J-th disc and K-th disc intersect if J ≠ K and J-th and K-th discs 
-have at least one common point.
+We draw N discs on a plane. The discs are numbered from 0 to N − 1. A zero-indexed array A of N non-negative integers,
+specifying the radiuses of the discs, is given. The J-th disc is drawn with its center at (J, 0) and radius A[J].
+
+We say that the J-th disc and K-th disc intersect if J ≠ K and the J-th and K-th discs have at least one common point
+(assuming that the discs contain their borders).
+
+The figure below shows discs drawn for N = 6 and A as follows:
+
+    A[0] = 1
+    A[1] = 5
+    A[2] = 2
+    A[3] = 1
+    A[4] = 4
+    A[5] = 0
+
+https://codility-frontend-prod.s3.amazonaws.com/media/task_static/
+number_of_disc_intersections/static/images/auto/0eed8918b13a735f4e396c9a87182a38.png
+
+There are eleven (unordered) pairs of discs that intersect, namely:
+
+    discs 1 and 4 intersect, and both intersect with all the other discs;
+    disc 2 also intersects with discs 0 and 3.
 
 Write a function:
 
-    function solution($A); 
+    function solution($A);
 
-that, given an array A describing N discs as explained above, 
-returns the number of pairs of intersecting discs. For example, given N=6 and:
+that, given an array A describing N discs as explained above, returns the number of (unordered) pairs of
+intersecting discs. The function should return −1 if the number of intersecting pairs exceeds 10,000,000.
 
-    A[0] = 1  A[1] = 5  A[2] = 2 
-    A[3] = 1  A[4] = 4  A[5] = 0  
-
-intersecting discs appear in eleven pairs of elements:
-
-        0 and 1,
-        0 and 2,
-        0 and 4,
-        1 and 2,
-        1 and 3,
-        1 and 4,
-        1 and 5,
-        2 and 3,
-        2 and 4,
-        3 and 4,
-        4 and 5.
-
-so the function should return 11.
-
-The function should return −1 if the number of intersecting pairs exceeds 10,000,000.
+Given array A shown above, the function should return 11, as explained above.
 
 Assume that:
         N is an integer within the range [0..100,000];
-        each element of array A is an integer within the range [0..2147483647].
+        each element of array A is an integer within the range [0..2,147,483,647].
 
 Complexity:
         expected worst-case time complexity is O(N*log(N));
-        expected worst-case space complexity is O(N), 
+        expected worst-case space complexity is O(N),
         beyond input storage (not counting the storage required for input arguments).
 
 Elements of input arrays can be modified.
 */
 
-/*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demoKUH84U-XJE/
- * LEVEL: HARD
- * Correctness:	100%
- * Performance:	100%
- * Task score:	100%
+/**
+ * NumberOfDiscIntersections task.
+ *
+ * CODILITY ANALYSIS: https://codility.com/demo/results/trainingAGQ6SY-PCU/
+ * LEVEL: MEDIUM
+ * Correctness: 100%
+ * Performance: 100%
+ * Task score:  100%
+ *
+ * @param int[] Zero-indexed array A of N non-negative integers, specifying the radiuses of the discs
+ *
+ * @return int The number of (unordered) pairs of intersecting discs,
+ * or −1 if the number of intersecting pairs exceeds 10,000,000
  */
-function solution($A) 
+function solution($A)
 {
-	// all discs are on x=0 axis of coordinate system, only y position is growing
+    // All discs centers are on x-coordinate (abscissa) of coordinate system
 
-	// number of intersecting discs
-	$intersectingDiscs = 0;
-	// number of discs started at some position
-	$dsp = array_fill(0, count($A), 0);
-	// number of discs ended at some position
-	$dep = array_fill(0, count($A), 0);
+    // The number of intersecting discs
+    $intersectingDiscsCount = 0;
+    // The number of discs which started at some position
+    $discStartPositionCount = array_fill(0, count($A), 0);
+    // The number of discs which ended at some position
+    $discEndPositionCount = array_fill(0, count($A), 0);
 
-	for($i = 0; $i < count($A); $i++)
-	{
-		// indexes are staying in [0, N-1] domain
+    // Iterating through discs
+    foreach ($A as $center => $radius) {
+        // Disc start position, if it is on negative side of x-coordinate, we set it to 0
+        $discStartPosition = max(0, $center - $radius);
+        // Disc end position, if it is larger than max center, we set it to largest positive center
+        $discEndPosition = min(count($A) - 1, $center + $radius);
 
-		// disc started position index
-		$dspIndex = max(0, $i - $A[$i]);
-		// disc end position index
-		$depIndex = min(count($A) - 1, $i + $A[$i]);
+        // The number of discs which started at some position
+        $discStartPositionCount[$discStartPosition]++;
+        // The number of discs which ended at some position
+        $discEndPositionCount[$discEndPosition]++;
+    }
 
-		// number of discs started at some position
-		$dsp[$dspIndex]++;
-		// number of discs ended at some position
-		$dep[$depIndex]++;
-	}
+    // Discs count at some position which are already started, but not yet ended (current discs)
+    $startedButNotEndedDiscsCount = 0;
+    // Iterating through discs
+    foreach ($A as $center => $radius) {
+        // If there are discs which start on this disc center
+        if ($discStartPositionCount[$center] > 0) {
+            // Current discs multiplied by count of discs which started at current center position
+            $intersectingDiscsCount += $startedButNotEndedDiscsCount * $discStartPositionCount[$center];
+            // Intersections of already started discs
+            // Gauss sum formula n(n + 1)/2, where n = $discStartPositionCount[$center] - 1, which leads to:
+            // ($discStartPositionCount[$center] - 1) * [($discStartPositionCount[$center] - 1) + 1] / 2
+            $intersectingDiscsCount += $discStartPositionCount[$center] * ($discStartPositionCount[$center] - 1) / 2;
 
-	// current discs at each position (which are started, but not yet ended)
-	$currentDiscs = 0;
-	// iterating through positions, [0, N-1] domain 
-	for($i = 0; $i < count($A); $i++)
-	{
-		// if there are discs which start at this position
-		if($dsp[$i] > 0)
-		{
-			// current discs multiplied by count of discs which started at position $i
-			$intersectingDiscs += $currentDiscs * $dsp[$i];
-			// intersections of already started discs
-			// Gauss sum formula n(n + 1)/2, where n = $dsp[$i] - 1, which leads to: 
-			// ($dsp[$i] - 1) * [($dsp[$i] - 1) + 1] / 2 => $dsp[$i] * ($dsp[$i] - 1) / 2
-			$intersectingDiscs += $dsp[$i] * ($dsp[$i] - 1) / 2;
+            // If the number of intersecting pairs exceeds 10,000,000
+            if ($intersectingDiscsCount > 10000000) {
+                $intersectingDiscsCount = -1;
+                break;
+            }
 
-			// if the number of intersecting pairs exceeds 10,000,000 
-			if($intersectingDiscs > 10000000)
-				return -1;
-			
-			// discs started at this position
-			$currentDiscs += $dsp[$i];
-		}
-		// discs ended at this position
-		$currentDiscs -= $dep[$i];
-	}
+            $startedButNotEndedDiscsCount += $discStartPositionCount[$center];
+        }
 
-	return $intersectingDiscs;
+        $startedButNotEndedDiscsCount -= $discEndPositionCount[$center];
+    }
+
+    return $intersectingDiscsCount;
 }
