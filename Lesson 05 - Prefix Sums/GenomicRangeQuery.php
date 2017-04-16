@@ -69,7 +69,7 @@ Elements of input arrays can be modified.
 /**
  * GenomicRangeQuery task.
  *
- * CODILITY ANALYSIS: https://codility.com/demo/results/trainingPEQFET-XQX/
+ * CODILITY ANALYSIS: https://codility.com/demo/results/training7X6FYJ-JSJ/
  * LEVEL: MEDIUM
  * Correctness: 100%
  * Performance: 100%
@@ -104,15 +104,11 @@ function solution($S, $P, $Q)
         // that is important because we are searching for minimal impact factor in subsequence
         foreach ($supportedNucleotideTypes as $impactFactor) {
             // Impact factor occurrences before subsequence start
-            $impactFactorCountBeforeSubsequenceStart =
-                isset($dnaSequenceImpactFactorCountToPosition[$impactFactor][$start - 1])
+            $impactFactorCountBeforeSubsequenceStart = $start - 1 >= 0
                     ? $dnaSequenceImpactFactorCountToPosition[$impactFactor][$start - 1]
                     : 0;
             // Impact factor occurrences after subsequence end
-            $impactFactorCountAfterSubsequenceEnd =
-                isset($dnaSequenceImpactFactorCountToPosition[$impactFactor][$end])
-                    ? $dnaSequenceImpactFactorCountToPosition[$impactFactor][$end]
-                    : 0;
+            $impactFactorCountAfterSubsequenceEnd = $dnaSequenceImpactFactorCountToPosition[$impactFactor][$end];
 
             // If impact factor occurrences increased in given subsequence,
             // this is minimal impact factor for this subsequence
