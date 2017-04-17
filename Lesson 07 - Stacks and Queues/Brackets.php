@@ -1,7 +1,7 @@
 <?php
 
 /*
-A string S consisting of N characters is considered to be properly nested 
+A string S consisting of N characters is considered to be properly nested
 if any of the following conditions is true:
 
         S is empty;
@@ -12,7 +12,7 @@ For example, the string "{[()()]}" is properly nested but "([)()]" is not.
 
 Write a function:
 
-    function solution($S); 
+    function solution($S);
 
 that, given a string S consisting of N characters, returns 1 if S is properly nested and 0 otherwise.
 
@@ -25,61 +25,76 @@ Assume that:
 
 Complexity:
         expected worst-case time complexity is O(N);
-        expected worst-case space complexity is O(N) 
+        expected worst-case space complexity is O(N)
         (not counting the storage required for input arguments).
 */
 
-/*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demo874NSZ-HA4/
+/**
+ * Brackets task.
+ *
+ * CODILITY ANALYSIS: https://codility.com/demo/results/trainingS2PXXF-BVW/
  * LEVEL: EASY
- * Correctness:	100%
- * Performance:	100%
- * Task score:	100%
+ * Correctness: 100%
+ * Performance: 100%
+ * Task score:  100%
+ *
+ * @param string $S String S consisting of N characters
+ *
+ * @return int 1 if S is properly nested and 0 otherwise
  */
 function solution($S)
 {
-	// last open bracket must be closed first (LIFO), first open bracket must be closed last;
-	// does this remind you on stack data structure ?
+    // Last open bracket must be closed first (LIFO), first open bracket must be closed last,
+    // these are the characteristics of the stack data structure
 
-	// this array will be manipulated as stack data structure
-	$stack = array();
-	// convert brackets string to a brackets array
-	$brackets = str_split($S);
+    // Initializing properly nested to 1 (true)
+    $isProperlyNested = 1;
+    $bracketsStack = [];
 
-	// opening and closing brackets, keys are given by bracket type
-	$opening = array(3 => '{', 2 => '[', 1 => '(');
-	$closing = array(1 => ')', 2 => ']', 3 => '}');
+    // Converts brackets string to a brackets array
+    $brackets = str_split($S);
+    // Opening brackets, keys are given by bracket type
+    $openingBrackets = ['braces' => '{', 'square ' => '[', 'parentheses' => '('];
+    // Closing brackets, keys are given by bracket type
+    $closingBrackets = ['parentheses' => ')', 'square ' => ']', 'braces' => '}'];
 
-	foreach($brackets as $bracket) 
-	{
-		// opening brackets are always pushed to the stack
-		if(in_array($bracket, $opening))
-			array_push($stack, $bracket);
-		// closing brackets are popped out of the stack only if brackets structure is correct
-		elseif(in_array($bracket, $closing))
-		{
-			// if there are no opening brackets, and first bracket is closing
-			if(empty($stack))
-				return 0;
+    // Iterating through brackets
+    foreach ($brackets as $bracket) {
+        if (in_array($bracket, $openingBrackets)) {
+            // Opening brackets are always pushed to the stack
+            array_push($bracketsStack, $bracket);
+        } elseif (in_array($bracket, $closingBrackets)) {
+            // Closing brackets are popped out of the stack only if brackets structure is correct
 
-			$stackTop = end($stack);
-			// stack top bracket type must be opening
-			$stackTopBracketType = array_search($stackTop, $opening);
-			// current bracket type is closing
-			$currentBracketType = array_search($bracket, $closing);
+            // If there are no opening brackets, and the first bracket is closing
+            if (count($bracketsStack) == 0) {
+                $isProperlyNested = 0;
+                break;
+            } else {
+                // Stack top bracket
+                $stackTopBracket = $bracketsStack[count($bracketsStack) - 1];
 
-			// if opening and closing bracket are of the same type
-			if($stackTopBracketType === $currentBracketType)
-				array_pop($stack);
-			// if opening and closing bracket are not of the same type
-			else
-				return 0;
-		}
-	}
+                // Stack top bracket type
+                $stackTopBracketType = array_search($stackTopBracket, $openingBrackets);
+                // Current iteration bracket type
+                $bracketType = array_search($bracket, $closingBrackets);
 
-	// if bracket structure is correct, stack is empty
-	if(count($stack) === 0)
-		return 1;
-	else
-		return 0;
+                if ($stackTopBracketType == $bracketType) {
+                    // If last opening and current closing bracket are of the same type
+                    array_pop($bracketsStack);
+                } else {
+                    // If last opening and current closing bracket are not of the same type
+                    $isProperlyNested = 0;
+                    break;
+                }
+            }
+        }
+    }
+
+    // If brackets structure is correct, stack must be empty
+    if (count($bracketsStack) > 0) {
+        $isProperlyNested = 0;
+    }
+
+    return $isProperlyNested;
 }
