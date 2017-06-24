@@ -5,7 +5,7 @@ A non-empty zero-indexed array A consisting of N integers is given.
 
 A triplet (X, Y, Z), such that 0 ≤ X < Y < Z < N, is called a double slice.
 
-The sum of double slice (X, Y, Z) is the total of 
+The sum of double slice (X, Y, Z) is the total of
 A[X + 1] + A[X + 2] + ... + A[Y − 1] + A[Y + 1] + A[Y + 2] + ... + A[Z − 1].
 
 For example, array A such that:
@@ -29,9 +29,9 @@ The goal is to find the maximal sum of any double slice.
 
 Write a function:
 
-    function solution($A); 
+    function solution($A);
 
-that, given a non-empty zero-indexed array A consisting of N integers, 
+that, given a non-empty zero-indexed array A consisting of N integers,
 returns the maximal sum of any double slice.
 
 For example, given:
@@ -53,42 +53,52 @@ Assume that:
 
 Complexity:
         expected worst-case time complexity is O(N);
-        expected worst-case space complexity is O(N), 
+        expected worst-case space complexity is O(N),
         beyond input storage (not counting the storage required for input arguments).
 
 Elements of input arrays can be modified.
 */
 
-/*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demoJH96QD-WT3/
- * LEVEL: MEDIUM
- * Correctness:	100%
- * Performance:	100%
- * Task score:	100%
+/**
+ * MaxDoubleSliceSum task.
+ *
+ * CODILITY ANALYSIS: https://codility.com/demo/results/trainingA996ZX-CD5/
+ * LEVEL: EASY
+ * Correctness: 100%
+ * Performance: 100%
+ * Task score:  100%
+ *
+ * @param array $A Non-empty zero-indexed array A consisting of N integers
+ *
+ * @return int The maximal sum of any double slice
  */
 function solution($A)
 {
-	$N = count($A);
+    $N = count($A);
 
-	// left max slice sums
-	$leftMaxSliceSums = array(0, $N, 0);
-	// right max slice sums
-	$rightMaxSliceSums = array(0, $N, 0);
+    // Calculating left and right slice sum on every index, marginal integers are not counted
+    for ($i = 1; $i < $N - 1; $i++) {
+        $previousIndexLeftMaxSliceSums = isset($leftMaxSliceSums[$i - 1]) ? $leftMaxSliceSums[$i - 1] : 0;
+        // Sum cannot be negative because we can always pick triplet with no indexes in between
+        $leftMaxSliceSums[$i] = max(0, $previousIndexLeftMaxSliceSums + $A[$i]);
+    }
+    for ($i = $N - 2; $i > 0; $i--) {
+        $nextIndexRightMaxSliceSums = isset($rightMaxSliceSums[$i + 1]) ? $rightMaxSliceSums[$i + 1] : 0;
+        $rightMaxSliceSums[$i] = max(0, $nextIndexRightMaxSliceSums + $A[$i]);
+    }
 
-	// calculating left and right max slice sums, marginal integers are not counted
-	for($i = 1; $i < ($N - 1); $i++)
-		$leftMaxSliceSums[$i] = max(0, $leftMaxSliceSums[$i - 1] + $A[$i]);
-	for($i = $N - 2; $i > 0; $i--)
-		$rightMaxSliceSums[$i] = max(0, $rightMaxSliceSums[$i + 1] + $A[$i]);
+    // Maximum double slice sum
+    $maxDoubleSliceSum = 0;
+    // Maximum sum slices before and after the index are summed and maximum double slice sum is searched
+    for ($i = 1; $i < $N - 1; $i++) {
+        $leftMaxSliceSum = isset($leftMaxSliceSums[$i - 1]) ? $leftMaxSliceSums[$i - 1] : 0;
+        $rightMaxSliceSum = isset($rightMaxSliceSums[$i + 1]) ? $rightMaxSliceSums[$i + 1] : 0;
 
-	// maximum double slice sum
-	$maxDoubleSliceSum = 0;
-	for($i = 1; $i < ($N - 1); $i++)
-	{
-		$doubleSliceSum = $leftMaxSliceSums[$i - 1] + $rightMaxSliceSums[$i + 1];
-		if($doubleSliceSum > $maxDoubleSliceSum)
-			$maxDoubleSliceSum = $doubleSliceSum;
-	}
+        $doubleSliceSum = $leftMaxSliceSum + $rightMaxSliceSum;
+        if ($doubleSliceSum > $maxDoubleSliceSum) {
+            $maxDoubleSliceSum = $doubleSliceSum;
+        }
+    }
 
-	return $maxDoubleSliceSum;
+    return $maxDoubleSliceSum;
 }
