@@ -1,13 +1,13 @@
 <?php
 
 /*
-A non-empty zero-indexed array A consisting of N integers is given. 
-A pair of integers (P, Q), such that 0 ≤ P ≤ Q < N, is called a slice of array A. 
+A non-empty zero-indexed array A consisting of N integers is given.
+A pair of integers (P, Q), such that 0 ≤ P ≤ Q < N, is called a slice of array A.
 The sum of a slice (P, Q) is the total of A[P] + A[P+1] + ... + A[Q].
 
 Write a function:
 
-    function solution($A); 
+    function solution($A);
 
 that, given an array A consisting of N integers, returns the maximum sum of any slice of A.
 
@@ -30,31 +30,38 @@ Assume that:
 
 Complexity:
         expected worst-case time complexity is O(N);
-        expected worst-case space complexity is O(N), 
+        expected worst-case space complexity is O(N),
         beyond input storage (not counting the storage required for input arguments).
 
 Elements of input arrays can be modified.
 */
 
-/*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demoUJ6MEN-HR6/
+/**
+ * MaxSliceSum task.
+ *
+ * CODILITY ANALYSIS: https://codility.com/demo/results/trainingS2Z9BH-BM4/
  * LEVEL: EASY
- * Correctness:	100%
- * Performance:	100%
- * Task score:	100%
+ * Correctness: 100%
+ * Performance: 100%
+ * Task score:  100%
+ *
+ * @param array $A Non-empty zero-indexed array A consisting of N integers
+ *
+ * @return int The maximum sum of any slice of A
  */
 function solution($A)
 {
-	// maximum slice sum
-	$maxSliceSum = $A[0];
+    // Maximum slice sum is initialized to the first integer
+    $maxSliceSum = $A[0];
+    // Maximum sum after n-th integer
+    $maxSliceAfterInt = $A[0];
 
-	// maximum sum after n-th integer
-	$maxSliceAfterInt = $A[0];
-	for($i = 1; $i < count($A); $i++)
-	{
-		$maxSliceAfterInt = max($A[$i], $maxSliceAfterInt + $A[$i]);
-		$maxSliceSum = max($maxSliceSum, $maxSliceAfterInt);
-	}
+    // Removing first element, because it is already included
+    unset($A[0]);
+    foreach ($A as $integer) {
+        $maxSliceAfterInt = max($integer, $maxSliceAfterInt + $integer);
+        $maxSliceSum = max($maxSliceSum, $maxSliceAfterInt);
+    }
 
-	return $maxSliceSum;
+    return $maxSliceSum;
 }
