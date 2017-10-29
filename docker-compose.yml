@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+    nginx:
+        image: nginx:latest
+        ports:
+            - 80:80
+        volumes:
+            - .:/var/www
+            - ./site.conf:/etc/nginx/conf.d/default.conf
+    php:
+        image: php:7.1-fpm
+        volumes:
+            - .:/var/www
+        working_dir: /var/www
