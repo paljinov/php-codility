@@ -13,7 +13,7 @@ All tasks are **Codility Limited** ownership. This repository represents my solu
 Directory structure example
 ============
 <pre>
-/lesson x: Lesson name  # Folder for certain lesson 
+/lesson x: Lesson name  # Folder for certain lesson
     solution1.php       # Task1 solution
     solution2.php       # Task2 solution
     solution3.php       # Task3 solution
@@ -39,6 +39,15 @@ Contribution
 ============
 Feel free to fork this repository and solve something in better, i.e. more optimal way.
 
+**php-codility** is dockerized for everyone who prefers to debug in the browser instead of in the console.
+
+If you have docker installed:
+
+1. Pull php-codility project
+2. Open console and change directory to project root
+3. Run the following command: **docker-compose up -d**
+4. Now you can open any task in your favorite browser, e.g. [BinaryGap](http://localhost/Lesson%2001%20-%20Iterations/BinaryGap.php)  
+
 Copyright and License
 ============
 
@@ -59,6 +68,3 @@ According to the [Codility Programmer Terms of Service](https://codility.com/ter
 
 Copyright (c) 2015 - 2017 Pave Aljinović  
 Licensed under the [MIT License](https://github.com/paljinov/php-codility/blob/master/LICENSE.md)
-
-
-
