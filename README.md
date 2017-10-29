@@ -45,8 +45,14 @@ If you have docker installed:
 
 1. Pull php-codility project
 2. Open console and change directory to project root
-3. Run the following command: **docker-compose up -d**
-4. Now you can open any task in your favorite browser, e.g. [BinaryGap](http://localhost/Lesson%2001%20-%20Iterations/BinaryGap.php)  
+3. Run the following command:
+```sh
+docker-compose up -d
+```
+4. Now you can open any task in your favorite browser, e.g.
+```
+http://localhost/Lesson%2001%20-%20Iterations/BinaryGap.php
+```
 
 Copyright and License
 ============
