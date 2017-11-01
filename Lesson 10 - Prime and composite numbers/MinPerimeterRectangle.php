@@ -42,7 +42,7 @@ Complexity:
  * Performance: 100%
  * Task score:  100%
  *
- * @param array $N Rectangle area
+ * @param int $N Rectangle area
  *
  * @return int The minimal rectangle perimeter
  */
