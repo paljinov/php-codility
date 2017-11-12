@@ -13,11 +13,11 @@ All tasks are **Codility Limited** ownership. This repository represents my solu
 Directory structure example
 ============
 <pre>
-/lesson x: Lesson name  # Folder for certain lesson
-    solution1.php       # Task1 solution
-    solution2.php       # Task2 solution
-    solution3.php       # Task3 solution
-    lesson.pdf          # Lesson PDF, learn algorithmic basic required to solve tasks
+src/Lesson x - Lesson name  # Folder for certain lesson
+    Solution1.php       # Task1 solution
+    Solution2.php       # Task2 solution
+    Solution3.php       # Task3 solution
+    Lesson.pdf          # Lesson PDF, learn algorithmic basic required to solve tasks
 </pre>
 
 Every solution has description according to this example:
@@ -51,7 +51,7 @@ docker-compose up -d
 ```
 4. Now you can open any task in your favorite browser, e.g.
 ```
-http://localhost/Lesson%2001%20-%20Iterations/BinaryGap.php
+http://localhost/src/Lesson%2001%20-%20Iterations/BinaryGap.php
 ```
 
 Copyright and License

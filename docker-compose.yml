@@ -7,10 +7,10 @@ services:
             - 80:80
         volumes:
             - .:/var/www
-            - ./.config/site.conf:/etc/nginx/conf.d/default.conf
+            - ./config/site.conf:/etc/nginx/conf.d/default.conf
     php:
         image: php:7.1-fpm
         volumes:
             - .:/var/www
-            - ./.config/php.ini:/usr/local/etc/php/php.ini
+            - ./config/php.ini:/usr/local/etc/php/php.ini
         working_dir: /var/www
