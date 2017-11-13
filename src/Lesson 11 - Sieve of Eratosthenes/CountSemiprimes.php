@@ -58,7 +58,7 @@ Elements of input arrays can be modified.
  * Count semiprimes task.
  *
  * CODILITY ANALYSIS: https://codility.com/demo/results/trainingM586YP-6MT/
- * LEVEL: MEDIUM
+ * LEVEL: EASY
  * Correctness: 100%
  * Performance: 100%
  * Task score  100%
