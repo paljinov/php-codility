@@ -23,7 +23,7 @@ For example, the following array A:
 
 has exactly three peaks: 3, 5, 10.
 
-We want to divide this array into blocks containing the same number of elements. More precisely, 
+We want to divide this array into blocks containing the same number of elements. More precisely,
 we want to choose a number K that will yield the following blocks:
 
         A[0], A[1], ..., A[K − 1],
@@ -31,8 +31,8 @@ we want to choose a number K that will yield the following blocks:
         ...
         A[N − K], A[N − K + 1], ..., A[N − 1].
 
-What's more, every block should contain at least one peak. Notice that extreme elements of the blocks 
-(for example A[K − 1] or A[K]) can also be peaks, but only if they have both neighbors 
+What's more, every block should contain at least one peak. Notice that extreme elements of the blocks
+(for example A[K − 1] or A[K]) can also be peaks, but only if they have both neighbors
 (including one in an adjacent blocks).
 
 The goal is to find the maximum number of blocks into which the array A can be divided.
@@ -46,7 +46,7 @@ Array A can be divided into blocks as follows:
         even though A[4] is in the adjacent block.
 
 However, array A cannot be divided into four blocks, (1, 2, 3), (4, 3, 4), (1, 2, 3) and (4, 6, 2),
-because the (1, 2, 3) blocks do not contain a peak. Notice in particular that the (4, 3, 4) block contains 
+because the (1, 2, 3) blocks do not contain a peak. Notice in particular that the (4, 3, 4) block contains
 two peaks: A[3] and A[5].
 
 The maximum number of blocks that array A can be divided into is three.
@@ -89,147 +89,167 @@ Complexity:
 Elements of input arrays can be modified.
 */
 
-/*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demo5R8JRF-5D5/
+/**
+ * Peaks task.
+ *
+ * CODILITY ANALYSIS: https://codility.com/demo/results/trainingEAPVE2-AVD/
  * LEVEL: MEDIUM
- * Correctness:	100%
- * Performance:	100%
- * Task score:	100%
+ * Correctness: 100%
+ * Performance: 100%
+ * Task score:  100%
+ *
+ * @param array Non-empty zero-indexed array A consisting of N integers
+ *
+ * @return int The maximum number of blocks into which A can be divided
  */
 function solution($A)
 {
-	// maximum number of blocks with a peak
-	$maxBlocks = 0;
-	$N = count($A);
+    // Maximum number of blocks with a peak
+    $maxBlocks = 0;
 
-	// does peak exist on every position, first and last element can't be peaks,
-	// because first one wouldn't have left neighbor, and last one wouldn't have right neighbor 
-	$peakOnPosition = array();
-	for($i = 1; $i < $N - 1; $i++)
-	{
-		if($A[$i] > $A[$i - 1] && $A[$i] > $A[$i + 1])
-			$peakOnPosition[] = $i;
-	}
+    $N = count($A);
 
-	$divisors = findDivisors($N);
-	$blockSizes = array_slice($divisors, 1);
+    // Positions with peaks
+    $peaksPositions = getPeaksPositions($A);
 
-	// we are searching for maximum number of blocks with all peaks
-	foreach($blockSizes as $blockSize)
-	{
-		$blockWithoutPeakFounded = false;
-		// we iterate through every possible block size
-		for($i = $blockSize; $i <= $N; $i += $blockSize)
-		{
-			// first block, we want to include first right block element
-			if($i === $blockSize)
-			{
-				$blockStartPosition = 0;
-				$blockEndPosition = $blockSize;
-			}
-			// last block, we want to include last left block element
-			elseif($i === $N)
-			{
-				$blockStartPosition = ($N - 1) - $blockSize;
-				$blockEndPosition = $N - 1;
-			}
-			// we want to include last element of left block and first element of right block
-			else
-			{
-				$blockStartPosition = ($i - 1) - $blockSize;
-				$blockEndPosition = ($i - 1) + 1;
-			}
+    $divisors = findDivisors($N);
+    $blockSizes = array_slice($divisors, 1);
 
-			$blockHasPeak = isPeakInBlock($peakOnPosition, $blockStartPosition, $blockEndPosition);
-			// if block doesn't have a peak
-			if(!$blockHasPeak)
-			{
-				$blockWithoutPeakFounded = true;
-				break;
-			}
-		}
+    // Searching for maximum number of blocks with all peaks
+    foreach ($blockSizes as $blockSize) {
+        $blockWithoutPeakFounded = false;
 
-		// if we have founded maximum number of blocks with a peak
-		if(!$blockWithoutPeakFounded)
-		{
-			$maxBlocks = $N / $blockSize;
-			break;
-		}
-	}
+        // Iterating through every possible block size
+        for ($i = $blockSize; $i <= $N; $i += $blockSize) {
+            if ($i === $blockSize) {
+                // First block, we want to include first right block element
 
-	return $maxBlocks;
+                $blockStartPosition = 0;
+                $blockEndPosition = $blockSize;
+            } elseif ($i === $N) {
+                // Last block, we want to include last left block element
+
+                $blockStartPosition = ($N - 1) - $blockSize;
+                $blockEndPosition = $N - 1;
+            } else {
+                // We want to include last element of left block and first element of right block
+
+                $blockStartPosition = ($i - 1) - $blockSize;
+                $blockEndPosition = ($i - 1) + 1;
+            }
+
+            $blockHasPeak = doesBlockHavePeak($peaksPositions, $blockStartPosition, $blockEndPosition);
+            // If block doesn't have a peak
+            if (!$blockHasPeak) {
+                $blockWithoutPeakFounded = true;
+                break;
+            }
+        }
+
+        // If we have founded maximum number of blocks with a peak
+        if (!$blockWithoutPeakFounded) {
+            $maxBlocks = $N / $blockSize;
+            break;
+        }
+    }
+
+    return $maxBlocks;
 }
 
 /**
- * Finds all divisors of the number.
+ * Get peaks positions.
  *
- * @param int $N The number for which divisors seeked
- * @return int[] divisors Divisors sorted ascending
+ * @param array $A
+ *
+ * @return array
+ * [
+ *     int position => int peak,
+ *     ...
+ * ]
  */
-function findDivisors($N)
+function getPeaksPositions(array $A): array
 {
-	// divisors
-	$divisors = array();
+    $peaks = [];
 
-	// for example, if N = 36, divisors are [1, 2, 3, 4, 6, 9, 12, 18]
-	// we use i * i < n formula to find divisors
-	$i = 1;
-	while($i * $i <= $N)
-	{
-		if($N % $i == 0)
-		{
-			// factors are mirrored, so we add +2, for example
-			// i = 1, 36 / 1 = 36 exist,
-			// i = 2, 36 / 2 = 18 exist,
-			// i = 3, 36 / 3 = 12 exist, etc...
-			if($i * $i < $N)
-			{
-				$divisors[] = $i;
-				$divisors[] = $N / $i;
-			}
-			// i = 6, 36 / 6 = 6 exist, for example
-			// we don't want to count same factor twice, so we add +1
-			else
-				$divisors[] = $i;
-		}
+    for ($i = 1; $i < count($A) - 1; $i++) {
+        // If mountain top is larger than its neighbours
+        if ($A[$i] > $A[$i - 1] && $A[$i] > $A[$i + 1]) {
+            $peaks[] = $i;
+        }
+    }
 
-		$i++;
-	}
+    return $peaks;
+}
 
-	sort($divisors);
-	return $divisors;
+/**
+ * Finds all number divisors.
+ *
+ * @param int $N The number for which divisors are seeked
+ *
+ * @return array Divisors sorted ascending
+ */
+function findDivisors(int $N): array
+{
+    // Divisors
+    $divisors = [];
+
+    // For example, if N = 36, divisors are [1, 2, 3, 4, 6, 9, 12, 18]
+    // we use i * i < n formula to find divisors
+    $i = 1;
+    while ($i * $i <= $N) {
+        if ($N % $i == 0) {
+            if ($i * $i < $N) {
+                // Factors are mirrored
+                // i = 1, 36 / 1 = 36 exist,
+                // i = 2, 36 / 2 = 18 exist,
+                // i = 3, 36 / 3 = 12 exist,
+                // etc...
+
+                $divisors[] = $i;
+                $divisors[] = $N / $i;
+            } else {
+                // Factors are requal
+                // i = 6, 36 / 6 = 6 exist
+
+                $divisors[] = $i;
+            }
+        }
+
+        $i++;
+    }
+    sort($divisors);
+
+    return $divisors;
 }
 
 /**
  * Does block contain a peak.
- * 
- * @param int[] $peakOnPosition Positions with peak
+ *
+ * @param array $peaksPositions Positions with peak
  * @param int $blockStartPosition First block position
  * @param int $blockEndPosition Last block position
- * 
- * @return boolean
+ *
+ * @return bool
  */
-function isPeakInBlock($peakOnPosition, $blockStartPosition, $blockEndPosition)
+function doesBlockHavePeak(array $peaksPositions, int $blockStartPosition, int $blockEndPosition): bool
 {
-	$beg = 0;
-	$end = count($peakOnPosition) - 1;
+    $beg = 0;
+    $end = count($peaksPositions) - 1;
 
-	$isPeakInBlock = false;
-	while($beg <= $end)
-	{
-		$mid = (int)(($beg + $end) / 2);
+    $doesBlockHavePeak = false;
+    while ($beg <= $end) {
+        $mid = (int) (($beg + $end) / 2);
 
-		// first and last element can't be peaks
-		if($peakOnPosition[$mid] > $blockStartPosition && $peakOnPosition[$mid] < $blockEndPosition)
-		{
-			$isPeakInBlock = true;
-			break;
-		}
-		elseif($peakOnPosition[$mid] <= $blockStartPosition)
-			$beg = $mid + 1;
-		else
-			$end = $mid - 1;
-	}
+        // First and last element can't be peaks
+        if ($peaksPositions[$mid] > $blockStartPosition && $peaksPositions[$mid] < $blockEndPosition) {
+            $doesBlockHavePeak = true;
+            break;
+        } elseif ($peaksPositions[$mid] <= $blockStartPosition) {
+            $beg = $mid + 1;
+        } else {
+            $end = $mid - 1;
+        }
+    }
 
-	return $isPeakInBlock;
+    return $doesBlockHavePeak;
 }
