@@ -1,16 +1,16 @@
 <?php
 
 /*
-A prime is a positive integer X that has exactly two distinct divisors: 1 and X. 
+A prime is a positive integer X that has exactly two distinct divisors: 1 and X.
 The first few prime integers are 2, 3, 5, 7, 11 and 13.
 
-A semiprime is a natural number that is the product of two (not necessarily distinct) prime numbers. 
+A semiprime is a natural number that is the product of two (not necessarily distinct) prime numbers.
 The first few semiprimes are 4, 6, 9, 10, 14, 15, 21, 22, 25, 26.
 
-You are given two non-empty zero-indexed arrays P and Q, each consisting of M integers. 
+You are given two non-empty zero-indexed arrays P and Q, each consisting of M integers.
 These arrays represent queries about the number of semiprimes within specified ranges.
 
-Query K requires you to find the number of semiprimes within the range (P[K], Q[K]), 
+Query K requires you to find the number of semiprimes within the range (P[K], Q[K]),
 where 1 ≤ P[K] ≤ Q[K] ≤ N.
 
 For example, consider an integer N = 26 and arrays P, Q such that:
@@ -27,9 +27,9 @@ The number of semiprimes within each of these ranges is as follows:
 
 Write a function:
 
-    function solution($N, $P, $Q); 
+    function solution($N, $P, $Q);
 
-that, given an integer N and two non-empty zero-indexed arrays P and Q consisting of M integers, 
+that, given an integer N and two non-empty zero-indexed arrays P and Q consisting of M integers,
 returns an array consisting of M elements specifying the consecutive answers to all the queries.
 
 For example, given an integer N = 26 and arrays P, Q such that:
@@ -48,120 +48,156 @@ Assume that:
 
 Complexity:
         expected worst-case time complexity is O(N*log(log(N))+M);
-        expected worst-case space complexity is O(N+M), 
+        expected worst-case space complexity is O(N+M),
         beyond input storage (not counting the storage required for input arguments).
 
 Elements of input arrays can be modified.
 */
 
-/*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demo6FPCUY-6BM/
+/**
+ * Count semiprimes task.
+ *
+ * CODILITY ANALYSIS: https://codility.com/demo/results/trainingM586YP-6MT/
  * LEVEL: MEDIUM
- * Correctness:	100%
- * Performance:	100%
- * Task score:	100%
+ * Correctness: 100%
+ * Performance: 100%
+ * Task score  100%
+ *
+ * @param int $N Semiprimes upper boundary
+ * @param array $P Non-empty zero-indexed array P consisting of M integers
+ * @param array $Q Non-empty zero-indexed array Q consisting of M integers
+ *
+ * @return array array consisting of M elements specifying the number of semiprimes within each of these ranges
  */
 function solution($N, $P, $Q)
 {
-	// primes from 2 to N, first we fill $primes array with consecutive integers from 2 to N
-	$primes = array();
-	for($i = 2; $i <= $N; $i++)
-		$primes[$i] = $i;
+    // Primes from 2 to N
+    $primes = getPrimes($N);
+    // Semiprimes from 2 to $N
+    $semiprimes = getSemiprimes($N, $primes);
 
-	// now we use sieve of Eratosthenes algorithm to filter prime integers
-	$i = 2;
-	while($i * $i <= $N)
-	{
-		// we start from first integer multiple, for example, 
-		// if integer is 2, we start from 4
-		// if integer is 3, we start from 6, etc.,
-		// and remove every integer multiple, after last iteration, only primes remain
-		for($j = $i + $i; $j <= $N; $j += $i) 
-			unset($primes[$j]);
-		$i++;
-	}
-	// we strip keys from array, to get zero-indexed array
-	$primes = array_values($primes);
+    // This $semiprimes array reorganization is very important for later speed
+    // when we will use isset/array_key_exists instead of array_search function for
+    // searching semiprime inside some range, because it is much faster;
+    // isset/array_key_exists Big-O is really close to O(1), and array_search Big-O is O(n)
+    // first we sort array by key, and value of every key marks array position, starting from 1
 
-	// semiprime integers from 2 to $N
-	$semiPrimes = array();
-	// semiprime is 2 primes multiplication, it can be 2 same or distinct primes
-	// for example, if prime is 2, semiprimes are, 
-	// 2 * 2 = 4
-	// 2 * 3 = 6, etc.
-	for($i = 0; $i < count($primes); $i++)
-	{
-		for($j = $i; $j < count($primes); $j++)
-		{
-			$primesProduct = $primes[$i] * $primes[$j];
-			if($primesProduct <= $N)
-				$semiPrimes[$primesProduct] = $primesProduct;
-			else
-				break;
-		}
-	}
+    $semiprimes = array_flip($semiprimes);
 
-	// this $semiPrimes array reorganization is very important for later speed
-	// when we will use array_key_exists function instead of array_search function for
-	// searching semiprime inside some range, because it is much faster;
-	// array_key_exists Big-O is really close to O(1), and array_search Big-O is O(n)
-	// first we sort array by key, and value of every key marks array position, starting from 1
-	ksort($semiPrimes);
-	$i = 1;
-	foreach($semiPrimes as $value)
-	{
-		$semiPrimes[$value] = $i;
-		$i++;
-	}
+    // $P and $Q have $M number of elements
+    $M = count($P);
+    // Number of semiprimes in given range
+    $rangeSemiprimesCount = [];
+    // Iterating through $P[$i] and $Q[$i] ranges
+    for ($i = 0; $i < $M; $i++) {
+        $leftKey = null;
+        $rightKey = null;
 
-	// $P and $Q have $M number of elements
-	$M = count($P);
-	// number of semiprimes in given range
-	$rangeSemiprimesCount = array();
-	// iterating through $P[$i] and $Q[$i] ranges
-	for($i = 0; $i < $M; $i++)
-	{
-		$leftKey = null;
-		$rightKey = null;
+        $range = $Q[$i] - $P[$i];
 
-		$range = $Q[$i] - $P[$i];
+        // Looking for the first left semiprime key which is higher or equal than $P[$i]
+        if (isset($semiprimes[$P[$i]])) {
+            $leftKey = $P[$i];
+        } else {
+            for ($j = 1; $j <= $range; $j++) {
+                if (isset($semiprimes[$P[$i] + $j])) {
+                    $leftKey = $P[$i] + $j;
+                    break;
+                }
+            }
+        }
 
-		// we are looking for first left semiprime key which is higher or equal than $P[$i]
-		if(array_key_exists($P[$i], $semiPrimes))
-			$leftKey = $P[$i];
-		else
-		{
-			for($j = 1; $j <= $range; $j++)
-				if(array_key_exists($P[$i] + $j, $semiPrimes))
-				{
-					$leftKey = $P[$i] + $j;
-					break;
-				}
-		}
+        // Looking for the first right semiprime key which is equal or lower than $Q[$i]
+        if (isset($semiprimes[$Q[$i]])) {
+            $rightKey = $Q[$i];
+        } else {
+            for ($j = 1; $j <= $range; $j++) {
+                if (isset($semiprimes[$Q[$i] - $j])) {
+                    $rightKey = $Q[$i] - $j;
+                    break;
+                }
+            }
+        }
 
-		// we are looking for first right semiprime key which is equal or lower than $Q[$i]
-		if(array_key_exists($Q[$i], $semiPrimes))
-			$rightKey = $Q[$i];
-		else
-		{
-			for($j = 1; $j <= $range; $j++)
-				if(array_key_exists($Q[$i] - $j, $semiPrimes))
-				{
-					$rightKey = $Q[$i] - $j;
-					break;
-				}
-		}
+        if ($leftKey === null || $rightKey === null) {
+            // If no semiprimes exist within range
 
-		//  if no semiprimes exist within range
-		if($leftKey === null || $rightKey === null)
-			$rangeSemiprimesCount[$i] = 0;
-		// example for $P[$i] = 4, $Q[$i] = 4, one boundary semiprime exist 
-		elseif($rightKey === $leftKey)
-			$rangeSemiprimesCount[$i] = 1;
-		else
-			// we count boundary semiprimes too
-			$rangeSemiprimesCount[$i] = $semiPrimes[$rightKey] - $semiPrimes[$leftKey] + 1;
-	}
+            $rangeSemiprimesCount[$i] = 0;
+        }
+        elseif ($rightKey === $leftKey) {
+            // Example for $P[$i] = 4, $Q[$i] = 4, one boundary semiprime exist
 
-	return $rangeSemiprimesCount;
+            $rangeSemiprimesCount[$i] = 1;
+        } else {
+            // Boundary semiprimes are counted too
+
+            $rangeSemiprimesCount[$i] = $semiprimes[$rightKey] - $semiprimes[$leftKey] + 1;
+        }
+    }
+
+    return $rangeSemiprimesCount;
+}
+
+/**
+ * Gets primes from 2 to upper boundary.
+ *
+ * @param int $N Upper boundary
+ *
+ * @return array Primes
+ */
+function getPrimes(int $N): array
+{
+    // First $primes array is filled with consecutive integers from 2 to N
+    $primes = [];
+    for ($i = 2; $i <= $N; $i++) {
+        $primes[$i] = $i;
+    }
+
+    // Sieve of Eratosthenes algorithm is used to filter prime integers
+    $i = 2;
+    while ($i * $i <= $N) {
+        // Starting from first integer multiple, for example,
+        // if integer is 2, we start from 4
+        // if integer is 3, we start from 6, etc.,
+        // and remove every integer multiple, after last iteration, only primes remain
+        for ($j = 2 * $i; $j <= $N; $j += $i) {
+            unset($primes[$j]);
+        }
+        $i++;
+    }
+    // Keys are stripped from array, to get zero-indexed array
+    $primes = array_values($primes);
+
+    return $primes;
+}
+
+/**
+ * Gets semiprimes from 2 to upper boundary.
+ *
+ * @param int $N Upper boundary
+ *
+ * @return array Semiprimes
+ */
+function getSemiprimes(int $N, array $primes): array
+{
+    // Semiprimes from 2 to $N
+    $semiprimes = [];
+
+    // Semiprime is multiplication of 2 primes, it can be 2 same or 2 distinct primes
+    // for example, if prime is 2, semiprimes are,
+    // 2 * 2 = 4
+    // 2 * 3 = 6, etc.
+    for ($i = 0; $i < count($primes); $i++) {
+        for ($j = $i; $j < count($primes); $j++) {
+            $primesProduct = $primes[$i] * $primes[$j];
+            if ($primesProduct <= $N) {
+                $semiprimes[] = $primesProduct;
+            } else {
+                break;
+            }
+        }
+    }
+    sort($semiprimes);
+
+    return $semiprimes;
 }
