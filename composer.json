@@ -5,10 +5,5 @@
     "license": "MIT",
     "require-dev": {
         "kint-php/kint": "^2.2"
-    },
-    "autoload-dev": {
-        "files": [
-            "src/Lesson 11 - Sieve of Eratosthenes"
-        ]
     }
 }
