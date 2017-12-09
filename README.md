@@ -54,6 +54,11 @@ docker-compose up -d
 http://localhost/src/Lesson%2001%20-%20Iterations/BinaryGap.php
 ```
 
+If you need to use PHP composer, e.g.:
+```sh
+docker-compose run --rm composer install
+```
+
 Copyright and License
 ============
 

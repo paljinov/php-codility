@@ -14,3 +14,8 @@ services:
             - .:/var/www
             - ./config/php.ini:/usr/local/etc/php/php.ini
         working_dir: /var/www
+    composer:
+        image: composer:latest
+        volumes:
+            - .:/app
+        command: install

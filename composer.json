@@ -1,0 +1,14 @@
+{
+    "name": "php-codility/php-codility",
+    "description": "PHP solutions to \"Codility Limited\" tasks from their lessons and challenges.",
+    "type": "project",
+    "license": "MIT",
+    "require-dev": {
+        "kint-php/kint": "^2.2"
+    },
+    "autoload-dev": {
+        "files": [
+            "src/Lesson 11 - Sieve of Eratosthenes"
+        ]
+    }
+}
