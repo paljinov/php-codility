@@ -69,7 +69,7 @@ Elements of input arrays can be modified.
 /**
  * GenomicRangeQuery task.
  *
- * CODILITY ANALYSIS: https://codility.com/demo/results/training7X6FYJ-JSJ/
+ * CODILITY ANALYSIS: https://app.codility.com/demo/results/trainingKTU8E8-CNJ/
  * LEVEL: MEDIUM
  * Correctness: 100%
  * Performance: 100%
@@ -83,37 +83,22 @@ Elements of input arrays can be modified.
  */
 function solution($S, $P, $Q)
 {
-    // Supported nucleotide types with their impact factor
-    $supportedNucleotideTypes = getSupportedNucleotideTypes();
+    // Nucleotides and their impact factors
+    $nucleotides = [1 => 'A', 2 => 'C', 3 => 'G', 4 => 'T'];
     // Number of DNA subsequences which are defined by array $P and $Q
     $M = count($P);
-    // DNA sequence impact factors count to some position, including the position also
-    $dnaSequenceImpactFactorCountToPosition = getDNASequenceImpactFactorCountToPosition($S);
+    // How many times nucleotide repeated till every position, including the position itself
+    $nucleotidesRepetitions = getNucleotidesRepetitions($S, $nucleotides);
 
-    // Minimal impact factor of nucleotides contained in the DNA sequence between positions P[K] and Q[K]
     $minSubsequenceImpactFactors = [];
-
-    // Iterating through DNA subsequences
     for ($i = 0; $i < $M; $i++) {
-        // Subsequence start position
-        $start = $P[$i];
-        // Subsequence end position
-        $end = $Q[$i];
+        for ($j = 1; $j <= count($nucleotides); $j++) {
+            // Left and right sequence boundary
+            $left = isset($nucleotidesRepetitions[$P[$i] - 1][$j]) ? $nucleotidesRepetitions[$P[$i] - 1][$j] : 0;
+            $right = $nucleotidesRepetitions[$Q[$i]][$j];
 
-        // Iterating through supported nucleotide types, impact factors in given array are ordered ascending,
-        // that is important because we are searching for minimal impact factor in subsequence
-        foreach ($supportedNucleotideTypes as $impactFactor) {
-            // Impact factor occurrences before subsequence start
-            $impactFactorCountBeforeSubsequenceStart = $start - 1 >= 0
-                    ? $dnaSequenceImpactFactorCountToPosition[$impactFactor][$start - 1]
-                    : 0;
-            // Impact factor occurrences after subsequence end
-            $impactFactorCountAfterSubsequenceEnd = $dnaSequenceImpactFactorCountToPosition[$impactFactor][$end];
-
-            // If impact factor occurrences increased in given subsequence,
-            // this is minimal impact factor for this subsequence
-            if ($impactFactorCountAfterSubsequenceEnd > $impactFactorCountBeforeSubsequenceStart) {
-                $minSubsequenceImpactFactors[$i] = $impactFactor;
+            if ($left < $right) {
+                $minSubsequenceImpactFactors[] = $j;
                 break;
             }
         }
@@ -123,87 +108,28 @@ function solution($S, $P, $Q)
 }
 
 /**
- * Gets supported nucleotide types with their impact factor.
- * Nucleotide impact factors are ordered ascending, from minimum to maximum.
+ * Gets how many times nucleotide repeated till every position, including the position itself.
  *
- * @return int[] Key is nucleotide type, value is impact factor
+ * @param string $S
+ * @param array $nucleotides
+ *
+ * @return array
  */
-function getSupportedNucleotideTypes(): array
+function getNucleotidesRepetitions(string $S, array $nucleotides): array
 {
-    return [
-        'A' => 1,
-        'C' => 2,
-        'G' => 3,
-        'T' => 4,
-    ];
-}
+    $nucleotidesRepetitions = [];
 
-/**
- * Gets DNA sequence impact factors count to some position, including the position also.
- *
- * @param string $S Non-empty zero-indexed string S consisting of N characters
- *
- * @return array DNA sequence impact factors count to some position, array structure:
- * [
- *      impact factor 1 => [number of occurences till and including the position 1, ... the position 2, ...]
- *      impact factor 2 => [number of occurences till and including the position 1, ... the position 2, ...]
- *      impact factor 3 => [number of occurences till and including the position 1, ... the position 2, ...]
- *      impact factor 4 => [number of occurences till and including the position 1, ... the position 2, ...]
- * ]
- */
-function getDNASequenceImpactFactorCountToPosition(string $S): array
-{
-    $dnaSequence = str_split($S);
-    // Supported nucleotide types with their impact factor
-    $supportedNucleotideTypes = getSupportedNucleotideTypes();
+    for ($i = 0; $i < strlen($S); $i++) {
+        for ($j = 1; $j <= count($nucleotides); $j++) {
+            $nucleotidesRepetitions[$i][$j] = isset($nucleotidesRepetitions[$i - 1][$j])
+                ? $nucleotidesRepetitions[$i - 1][$j]
+                : 0;
 
-    // DNA sequence impact factors count to some position, including the position also
-    $dnaSequenceImpactFactorCountToPosition = [];
-
-    // Iterating through supported nucleotide types
-    foreach ($supportedNucleotideTypes as $impactFactor) {
-        // Iterating through every nucleotide in DNA sequence
-        foreach ($dnaSequence as $position => $nucleotide) {
-            $nucleotideImpactFactor = getImpactFactorForNucleotide($nucleotide);
-
-            if ($impactFactor === $nucleotideImpactFactor) {
-                // If current position has current iteration impact factor
-
-                if (isset($dnaSequenceImpactFactorCountToPosition[$impactFactor])) {
-                    // If this is not first nucleotide occurrence, we increase occurrence count
-                    $dnaSequenceImpactFactorCountToPosition[$impactFactor][$position] =
-                        end($dnaSequenceImpactFactorCountToPosition[$impactFactor]) + 1;
-                } else {
-                    // If this is first nucleotide occurrence
-                    $dnaSequenceImpactFactorCountToPosition[$impactFactor][$position] = 1;
-                }
-            } else {
-                // If current position has not current iteration impact factor
-
-                if (isset($dnaSequenceImpactFactorCountToPosition[$impactFactor])) {
-                    $dnaSequenceImpactFactorCountToPosition[$impactFactor][$position] =
-                        end($dnaSequenceImpactFactorCountToPosition[$impactFactor]);
-                } else {
-                    $dnaSequenceImpactFactorCountToPosition[$impactFactor][$position] = 0;
-                }
+            if ($S[$i] == $nucleotides[$j]) {
+                $nucleotidesRepetitions[$i][$j]++;
             }
         }
     }
 
-    return $dnaSequenceImpactFactorCountToPosition;
-}
-
-/**
- * Gets impact factor for given nucleotide.
- *
- * @param string $nucleotide
- *
- * @return int Impact factor for given nucleotide
- */
-function getImpactFactorForNucleotide(string $nucleotide): int
-{
-    $supportedNucleotideTypes = getSupportedNucleotideTypes();
-    $impactFactor = $supportedNucleotideTypes[$nucleotide];
-
-    return $impactFactor;
+    return $nucleotidesRepetitions;
 }
