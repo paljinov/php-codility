@@ -4,6 +4,7 @@
     "type": "project",
     "license": "MIT",
     "require-dev": {
-        "kint-php/kint": "^2.2"
+        "friendsofphp/php-cs-fixer": "^2.10",
+        "symfony/var-dumper": "^4.0"
     }
 }
