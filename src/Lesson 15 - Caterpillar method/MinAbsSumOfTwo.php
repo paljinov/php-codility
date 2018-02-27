@@ -3,7 +3,7 @@
 /*
 Let A be a non-empty zero-indexed array consisting of N integers.
 
-The abs sum of two for a pair of indices (P, Q) is the absolute value |A[P] + A[Q]|, 
+The abs sum of two for a pair of indices (P, Q) is the absolute value |A[P] + A[Q]|,
 for 0 ≤ P ≤ Q < N.
 
 For example, the following array A:
@@ -22,9 +22,9 @@ The abs sum of two for the pair (2, 2) is A[2] + A[2] = |(−3) + (−3)| = 6.
 
 Write a function:
 
-    function solution($A); 
+    function solution($A);
 
-that, given a non-empty zero-indexed array A consisting of N integers, 
+that, given a non-empty zero-indexed array A consisting of N integers,
 returns the minimal abs sum of two for any pair of indices in this array.
 
 For example, given the following array A:
@@ -51,7 +51,7 @@ Assume that:
 
 Complexity:
         expected worst-case time complexity is O(N*log(N));
-        expected worst-case space complexity is O(N), 
+        expected worst-case space complexity is O(N),
         beyond input storage (not counting the storage required for input arguments).
 
 Elements of input arrays can be modified.
@@ -66,34 +66,37 @@ Elements of input arrays can be modified.
  */
 function solution($A)
 {
-	// sorting array $A from lowest to highest integer
-	sort($A);
-	$minAbsSum = null;
+    // sorting array $A from lowest to highest integer
+    sort($A);
+    $minAbsSum = null;
 
-	// starting position initialization
-	$i = 0;
-	// ending position initialization
-	$j = count($A) - 1;
+    // starting position initialization
+    $i = 0;
+    // ending position initialization
+    $j = count($A) - 1;
 
-	// we are searching for smallest absolute pair sum
-	while($i <= $j) 
-	{
-		$sum = $A[$i] + $A[$j];
-		$absSum = abs($sum);
-		if($minAbsSum === null || $absSum < $minAbsSum)
-			$minAbsSum = $absSum;
+    // we are searching for smallest absolute pair sum
+    while ($i <= $j) {
+        $sum = $A[$i] + $A[$j];
+        $absSum = abs($sum);
+        if ($minAbsSum === null || $absSum < $minAbsSum) {
+            $minAbsSum = $absSum;
+        }
 
-		// 0 is smallest absolute minimum pair sum we can get, therefore we strive to 0
-		// if sum is equal to zero, that is the smallest value possible, so we break loop
-		if($sum === 0)
-			break;
-		// if sum is lower than zero, we increase $i to get higher sum, closer to zero
-		elseif($sum < 0)
-			$i++;
-		// if sum is higher than zero, we decrease $j to get lower sum, closer to zero
-		else 
-			$j--;
-	}
+        // 0 is smallest absolute minimum pair sum we can get, therefore we strive to 0
+        // if sum is equal to zero, that is the smallest value possible, so we break loop
+        if ($sum === 0) {
+            break;
+        }
+        // if sum is lower than zero, we increase $i to get higher sum, closer to zero
+        elseif ($sum < 0) {
+            $i++;
+        }
+        // if sum is higher than zero, we decrease $j to get lower sum, closer to zero
+        else {
+            $j--;
+        }
+    }
 
-	return $minAbsSum;
+    return $minAbsSum;
 }

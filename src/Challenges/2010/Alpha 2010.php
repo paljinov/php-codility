@@ -1,8 +1,8 @@
 <?php
 
 /*
-A non-empty zero-indexed array A consisting of N integers is given. The first covering prefix of array A is 
-the smallest integer P such that 0 ≤ P < N and such that every value that occurs in array A also occurs in sequence 
+A non-empty zero-indexed array A consisting of N integers is given. The first covering prefix of array A is
+the smallest integer P such that 0 ≤ P < N and such that every value that occurs in array A also occurs in sequence
 A[0], A[1], ..., A[P].
 
 For example, the first covering prefix of the following 5−element array A:
@@ -35,7 +35,7 @@ Assume that:
 
 Complexity:
         expected worst-case time complexity is O(N);
-        expected worst-case space complexity is O(N), 
+        expected worst-case space complexity is O(N),
         beyond input storage (not counting the storage required for input arguments).
 
 Elements of input arrays can be modified.
@@ -50,17 +50,17 @@ Elements of input arrays can be modified.
  */
 function solution($A)
 {
-	// array which contains only the first integer occurences: array($integer => $position, ...)
-	$firstUniques = array();
-	foreach($A as $index => $integer)
-	{
-		// If first occurence was not found until now
-		if(!isset($firstUniques[$integer]))
-			$firstUniques[$integer] = $index;
-	}
+    // array which contains only the first integer occurences: array($integer => $position, ...)
+    $firstUniques = array();
+    foreach ($A as $index => $integer) {
+        // If first occurence was not found until now
+        if (!isset($firstUniques[$integer])) {
+            $firstUniques[$integer] = $index;
+        }
+    }
 
-	// Unique element which was last added represents the first covering prefix of array $A
-	$lastUniqueElementPosition = end($firstUniques);
+    // Unique element which was last added represents the first covering prefix of array $A
+    $lastUniqueElementPosition = end($firstUniques);
 
-	return $lastUniqueElementPosition;
+    return $lastUniqueElementPosition;
 }

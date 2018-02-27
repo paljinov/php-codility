@@ -1,14 +1,14 @@
 <?php
 
 /*
-There are N ropes numbered from 0 to N − 1, whose lengths are given in a zero-indexed array A, 
+There are N ropes numbered from 0 to N − 1, whose lengths are given in a zero-indexed array A,
 lying on the floor in a line. For each I (0 ≤ I < N), the length of rope I on the line is A[I].
 
-We say that two ropes I and I + 1 are adjacent. Two adjacent ropes can be tied together with a knot, 
-and the length of the tied rope is the sum of lengths of both ropes. 
+We say that two ropes I and I + 1 are adjacent. Two adjacent ropes can be tied together with a knot,
+and the length of the tied rope is the sum of lengths of both ropes.
 The resulting new rope can then be tied again.
 
-For a given integer K, the goal is to tie the ropes in such a way that the number 
+For a given integer K, the goal is to tie the ropes in such a way that the number
 of ropes whose length is greater than or equal to K is maximal.
 
 For example, consider K = 4 and array A such that:
@@ -36,14 +36,14 @@ We can tie:
         rope 1 with rope 2 to produce a rope of length A[1] + A[2] = 5;
         rope 4 with rope 5 with rope 6 to produce a rope of length A[4] + A[5] + A[6] = 5.
 
-After that, there will be three ropes whose lengths are greater than or equal to K = 4. 
+After that, there will be three ropes whose lengths are greater than or equal to K = 4.
 It is not possible to produce four such ropes.
 
 Write a function:
 
-    function solution($K, $A); 
+    function solution($K, $A);
 
-that, given an integer K and a non-empty zero-indexed array A of N integers, 
+that, given an integer K and a non-empty zero-indexed array A of N integers,
 returns the maximum number of ropes of length greater than or equal to K that can be created.
 
 For example, given K = 4 and array A such that:
@@ -65,7 +65,7 @@ Assume that:
 
 Complexity:
         expected worst-case time complexity is O(N);
-        expected worst-case space complexity is O(N), 
+        expected worst-case space complexity is O(N),
         beyond input storage (not counting the storage required for input arguments).
 
 Elements of input arrays can be modified.
@@ -80,20 +80,18 @@ Elements of input arrays can be modified.
  */
 function solution($K, $A)
 {
-	// maximum number of ropes of length greater than or equal to K that can be created
-	$ropesCount = 0; 
+    // maximum number of ropes of length greater than or equal to K that can be created
+    $ropesCount = 0;
 
-	// sum of tied ropes
-	$sumLength = 0;
-	foreach($A as $ropeLength)
-	{
-		$sumLength += $ropeLength;
-		if($sumLength >= $K)
-		{
-			$sumLength = 0;
-			$ropesCount++;
-		}
-	}
+    // sum of tied ropes
+    $sumLength = 0;
+    foreach ($A as $ropeLength) {
+        $sumLength += $ropeLength;
+        if ($sumLength >= $K) {
+            $sumLength = 0;
+            $ropesCount++;
+        }
+    }
 
-	return $ropesCount;
+    return $ropesCount;
 }

@@ -105,4 +105,3 @@ function calculateSumWithoutMissingInteger(array $A): float
 
     return $sumWithoutMissingInteger;
 }
-

@@ -86,7 +86,7 @@ function solution($A)
     // If there are at least 3 positive integers
     if (count($positive) >= 3) {
         // If three largest integers make new maximal product
-        if(array_product(array_slice($positive, 0, 3)) > $maxProduct) {
+        if (array_product(array_slice($positive, 0, 3)) > $maxProduct) {
             $maxProduct = array_product(array_slice($A, 0, 3));
         }
     }

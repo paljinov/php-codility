@@ -54,50 +54,49 @@ Elements of input arrays can be modified.
  */
 function solution($A)
 {
-	// number of intersecting discs
-	$intersections = 0;
+    // number of intersecting discs
+    $intersections = 0;
 
-	// for every point on X axis we count how many disc starts we have
-	$discStartPoints = [];
-	// for every point on X axis we count how many disc ends we have
-	$discEndPoints = [];
+    // for every point on X axis we count how many disc starts we have
+    $discStartPoints = [];
+    // for every point on X axis we count how many disc ends we have
+    $discEndPoints = [];
 
-	// we count repetitions of disc starts and disc ends on some point
-	foreach($A as $xCenter => $discRadius)
-	{
-		// if the disc started before the point 0 we act as it started at point 0
-		$start = $xCenter - $discRadius < 0 ? 0 : $xCenter - $discRadius;
-		// if the disc ended after the last disc center point we act as it ended on last disc center point
-		$end = $xCenter + $discRadius > count($A) - 1 ? count($A) - 1 : $xCenter + $discRadius;
+    // we count repetitions of disc starts and disc ends on some point
+    foreach ($A as $xCenter => $discRadius) {
+        // if the disc started before the point 0 we act as it started at point 0
+        $start = $xCenter - $discRadius < 0 ? 0 : $xCenter - $discRadius;
+        // if the disc ended after the last disc center point we act as it ended on last disc center point
+        $end = $xCenter + $discRadius > count($A) - 1 ? count($A) - 1 : $xCenter + $discRadius;
 
-		$discStartPoints[$start] = isset($discStartPoints[$start]) ? $discStartPoints[$start] + 1 : 1;
-		$discEndPoints[$end] = isset($discEndPoints[$end]) ? $discEndPoints[$end] + 1 : 1;
-	}
+        $discStartPoints[$start] = isset($discStartPoints[$start]) ? $discStartPoints[$start] + 1 : 1;
+        $discEndPoints[$end] = isset($discEndPoints[$end]) ? $discEndPoints[$end] + 1 : 1;
+    }
 
-	// difference between number of discs which are started before some point and that end at some point or later
-	$discsBetweenPoints = 0;
-	foreach($A as $xCenter => $discRadius)
-	{
-		// discs started at this point
-		$startedDiscs = isset($discStartPoints[$xCenter]) ? $discStartPoints[$xCenter] : 0;
-		// discs ended at this point
-		$endedDiscs = isset($discEndPoints[$xCenter]) ? $discEndPoints[$xCenter] : 0;
+    // difference between number of discs which are started before some point and that end at some point or later
+    $discsBetweenPoints = 0;
+    foreach ($A as $xCenter => $discRadius) {
+        // discs started at this point
+        $startedDiscs = isset($discStartPoints[$xCenter]) ? $discStartPoints[$xCenter] : 0;
+        // discs ended at this point
+        $endedDiscs = isset($discEndPoints[$xCenter]) ? $discEndPoints[$xCenter] : 0;
 
-		// the number of discs started before this point which are not ended yet,
-		// multiplied by the number of discs started at this point
-		$intersections += $discsBetweenPoints * $startedDiscs;
-		// the number of discs started at this point multiplied by number of discs started at this point
-		// minus one and divided by 2 to avoid counting double intersections (discs started at the same point)
-		$intersections += ($startedDiscs * ($startedDiscs - 1)) / 2;
+        // the number of discs started before this point which are not ended yet,
+        // multiplied by the number of discs started at this point
+        $intersections += $discsBetweenPoints * $startedDiscs;
+        // the number of discs started at this point multiplied by number of discs started at this point
+        // minus one and divided by 2 to avoid counting double intersections (discs started at the same point)
+        $intersections += ($startedDiscs * ($startedDiscs - 1)) / 2;
 
-		// discs between points is calculated by adding difference between
-		// discs started at this point and discs ended in this point
-		$discsBetweenPoints += $startedDiscs - $endedDiscs;
+        // discs between points is calculated by adding difference between
+        // discs started at this point and discs ended in this point
+        $discsBetweenPoints += $startedDiscs - $endedDiscs;
 
-		// if the number of intersecting discs exceeds 10,000,000 the function should return −1
-		if($intersections > 10000000)
-		    return -1;
-	}
+        // if the number of intersecting discs exceeds 10,000,000 the function should return −1
+        if ($intersections > 10000000) {
+            return -1;
+        }
+    }
 
-	return $intersections;
+    return $intersections;
 }

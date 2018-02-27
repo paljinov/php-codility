@@ -123,8 +123,7 @@ function solution($N, $P, $Q)
             // If no semiprimes exist within range
 
             $rangeSemiprimesCount[$i] = 0;
-        }
-        elseif ($rightKey === $leftKey) {
+        } elseif ($rightKey === $leftKey) {
             // Example for $P[$i] = 4, $Q[$i] = 4, one boundary semiprime exist
 
             $rangeSemiprimesCount[$i] = 1;
