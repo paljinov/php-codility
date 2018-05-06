@@ -53,10 +53,9 @@ docker-compose up -d
 ```
 http://localhost/src/Lesson%2001%20-%20Iterations/BinaryGap.php
 ```
-
-If you need to use PHP composer, e.g.:
+5. If you need to enter a running container:
 ```sh
-docker-compose run --rm composer install
+docker exec -it php-codility_app_1 /bin/bash
 ```
 
 Copyright and License
@@ -77,5 +76,5 @@ According to the [Codility Programmer Terms of Service](https://codility.com/ter
 
 ---
 
-Copyright (c) 2015 - 2017 Pave Aljinović  
+Copyright (c) 2015 - 2018 Pave Aljinović  
 Licensed under the [MIT License](https://github.com/paljinov/php-codility/blob/master/LICENSE.md)
