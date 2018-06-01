@@ -1,7 +1,7 @@
 <?php
 
 /*
-You are given a non-empty zero-indexed array A consisting of N integers.
+You are given an array A consisting of N integers.
 
 For each number A[i] such that 0 ≤ i < N, we want to count the number of elements
 of the array that are not the divisors of A[i]. We say that these elements are non-divisors.
@@ -57,43 +57,63 @@ Complexity:
 Elements of input arrays can be modified.
 */
 
-/*
- * CODILITY ANALYSIS: https://codility.com/demo/results/trainingXDX8PF-8NP/
+/**
+ * CountNonDivisible task.
+ *
+ * CODILITY ANALYSIS: https://app.codility.com/demo/results/training34D9UJ-W53/
  * LEVEL: MEDIUM
- * Correctness:	100%
- * Performance:	100%
- * Task score:	100%
+ * Correctness: 100%
+ * Performance: 100%
+ * Task score:  100%
+ *
+ * @param array $A Non-empty zero-indexed array A of N integers
+ *
+ * @return array A sequence of integers representing the amount of non-divisors
  */
 function solution($A)
 {
-    $N = count($A);
-    // amount of non-divisors
-    $nonDivisibles = array();
+    // A sequence of integers representing the amount of non-divisors
+    $nonDivisorsAmountSequence = [];
 
-    // calculate how many times number occurs in original array
-    $occurrence = array_fill(0, $N, 0);
-    foreach ($A as $val) {
-        $occurrence[$val] = isset($occurrence[$val]) ? $occurrence[$val] + 1 : 1;
+    $N = count($A);
+
+    // Integer occurrences in array A
+    $occurrences = array_fill(1, 2 * $N, 0);
+    foreach ($A as $integer) {
+        $occurrences[$integer] += 1;
     }
 
+    // Number of non divisors for some integer
+    $nonDivisorsForInteger = [];
     for ($i = 0; $i < $N; $i++) {
-        // define divisors number
-        $divisorsCount = 0;
-        for ($j = 1; $j * $j <= $A[$i]; $j++) {
-            // if $j is divisor of $A[$i] add number of occurences $j to $divisorsCount
-            if ($A[$i] % $j == 0) {
-                $divisorsCount += $occurrence[$j];
+        $integer = $A[$i];
 
-                // also add remainder of the division as a $A[$i] divisor
-                if ($A[$i] / $j != $j) {
-                    $divisorsCount += $occurrence[$A[$i] / $j];
+        if (isset($nonDivisorsForInteger[$integer])) {
+            // If we already calculated number of non divisors for this integer
+            $nonDivisorsAmountSequence[$i] = $nonDivisorsForInteger[$integer];
+        } else {
+            // If we haven't calculated number of non divisors for this integer
+
+            $divisorsCount = 0;
+
+            for ($j = 1; $j * $j <= $integer; $j++) {
+                // If $j is divisor of $integer] add number of occurences $j to $divisorsCount
+                if ($integer % $j == 0) {
+                    $divisorsCount += $occurrences[$j];
+
+                    // If divisor and quotient are not equal add occurences of quotient also
+                    $quotient = $integer / $j;
+                    if ($quotient != $j) {
+                        $divisorsCount += $occurrences[$quotient];
+                    }
                 }
             }
-        }
 
-        // subtract divisors number from array length to get nonDivisible for element $i
-        $nonDivisibles[$i] = $N - $divisorsCount;
+            // Subtract divisors number from array length to get non divisible for element $i
+            $nonDivisorsAmountSequence[$i] = $N - $divisorsCount;
+            $nonDivisorsForInteger[$integer] = $nonDivisorsAmountSequence[$i];
+        }
     }
 
-    return $nonDivisibles;
+    return $nonDivisorsAmountSequence;
 }
