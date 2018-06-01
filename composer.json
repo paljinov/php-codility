@@ -5,6 +5,6 @@
     "license": "MIT",
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.11",
-        "symfony/var-dumper": "^4.0"
+        "symfony/var-dumper": "^4.1"
     }
 }
