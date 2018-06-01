@@ -5,7 +5,7 @@ services:
         build: ./docker
         volumes:
             - ./:/var/www
-            - ./docker/config/php.ini:/usr/local/etc/php/php.ini
+            - ./docker/php/php.ini:/usr/local/etc/php/php.ini
         working_dir: /var/www
         expose:
             - "9000"
