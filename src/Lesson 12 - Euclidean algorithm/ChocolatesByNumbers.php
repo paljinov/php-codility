@@ -34,16 +34,23 @@ Complexity:
         expected worst-case space complexity is O(1).
 */
 
-/*
- * CODILITY ANALYSIS: https://codility.com/demo/results/demoWN5772-XS4/
+/**
+ * ChocolatesByNumbers task.
+ *
+ * CODILITY ANALYSIS: https://app.codility.com/demo/results/trainingEVHKSF-DSA/
  * LEVEL: EASY
- * Correctness:	100%
- * Performance:	100%
- * Task score:	100%
+ * Correctness: 100%
+ * Performance: 100%
+ * Task score:  100%
+ *
+ * @param int $N Positive integer N represents the number of chocolates arranged in a circle
+ * @param int $M Positive integer which represents how many chocolates we omit
+ *
+ * @return int The number of chocolates that you will eat
  */
 function solution($N, $M)
 {
-    // first we will explain why we are looking for the greatest common divisor of $N and $M
+    // First we will explain why we are looking for the greatest common divisor of $N and $M
     // we have 10 chocolates, on positions from 0 - 9, and $M which represent positions jump
     // if we start from 0, next positions we will are
     // 0 + 4 = 4 (skipping 1, 2, 3),
@@ -53,21 +60,21 @@ function solution($N, $M)
     // 6 + 4 = 0 (skipping 7, 8, 9) // empty wrappper,
     // so we ate chocolates on positions 0, 4, 8, 2, 6
     
-    // we can see, the full circle will close, in other words we will come to the starting position
+    // We can see, the full circle will close, in other words we will come to the starting position
     // after exactly: lowest common multiple of '$N = circle size' and '$M = jump' / '$M =jump' times
     // it follows: $eatenChocolates = lcm / M
     
-    // now little math:
+    // Now little math:
     // lcm = N * M / gcd, where gcd is greatest common divisor
     // it follows:
-    // 	$eatenChocolates = (N * M / gcd) / M
-    // 	$eatenChocolates = N / gcd
+    //  $eatenChocolates = (N * M / gcd) / M
+    //  $eatenChocolates = N / gcd
 
-    // on example (N = 10, M = 4):
-    // 	gcd = 2
-    // 	lcm = 10 * 4 / 2 = 20
-    // 	$eatenChocolates = lcm / M = 20 / 4 = 5, or
-    // 	$eatenChocolates = N / gcd = 10 / 2 = 5
+    // For example (N = 10, M = 4):
+    //  gcd = 2
+    //  lcm = 10 * 4 / 2 = 20
+    //  $eatenChocolates = lcm / M = 20 / 4 = 5, or
+    //  $eatenChocolates = N / gcd = 10 / 2 = 5
 
     return $N / gcd($N, $M);
 }
@@ -77,9 +84,10 @@ function solution($N, $M)
  *
  * @param int $a First positive integer
  * @param int $b Second positive integer
+ * 
  * @return int $a and $b greatest common divisor
  */
-function gcd($a, $b)
+function gcd(int $a, int $b): int
 {
     if ($a < $b) {
         return gcd($b, $a);
