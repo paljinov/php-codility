@@ -84,7 +84,7 @@ function solution($N, $M)
  *
  * @param int $a First positive integer
  * @param int $b Second positive integer
- * 
+ *
  * @return int $a and $b greatest common divisor
  */
 function gcd(int $a, int $b): int
@@ -92,6 +92,7 @@ function gcd(int $a, int $b): int
     if ($a < $b) {
         return gcd($b, $a);
     }
+
     if ($a % $b === 0) {
         return $b;
     } else {
