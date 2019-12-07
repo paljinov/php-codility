@@ -1,17 +1,14 @@
-php-codility
-============
+# php-codility
 
 PHP solutions to **Codility Limited**: https://codility.com/ tasks from their lessons and challenges.  
 
 Codility lessons: https://codility.com/programmers/lessons/  
 Codility challenges: https://codility.com/programmers/challenges/  
 
-Introduction
-============
+# Introduction
 All tasks are **Codility Limited** ownership. This repository represents my solutions to **Codility Limited** algorithmic tasks. The plan is to solve easier tasks first, and gradually solve all, even the hardest tasks at last. All tasks are considered completed only when when their performance is optimal, at best possible big O time and space complexity.
 
-Directory structure example
-============
+# Directory structure example
 <pre>
 src/Lesson x - Lesson name  # Folder for certain lesson
     Solution1.php       # Task1 solution
@@ -35,8 +32,7 @@ function solution($A)
 }
 ```
 
-Contribution
-============
+# Contribution
 Feel free to fork this repository and solve something in better, i.e. more optimal way.
 
 **php-codility** is dockerized for everyone who prefers to debug in the browser instead of in the console.
@@ -58,8 +54,7 @@ http://localhost/src/Lesson%2001%20-%20Iterations/BinaryGap.php
 docker exec -it php-codility_app_1 /bin/bash
 ```
 
-Copyright and License
-============
+# Copyright and License
 
 According to the [Codility Programmer Terms of Service](https://codility.com/terms-of-service-for-programmers/) **section 8.2.** it is allowed to publish, share and reproduce training section, training tasks and past challenges, their solutions and assessment results.
 
@@ -76,5 +71,5 @@ According to the [Codility Programmer Terms of Service](https://codility.com/ter
 
 ---
 
-Copyright (c) 2015 - 2018 Pave Aljinović  
-Licensed under the [MIT License](https://github.com/paljinov/php-codility/blob/master/LICENSE.md)
+Copyright (c) 2015 - 2019 Pave Aljinović  
+Licensed under the [MIT License](docs/LICENSE.md)
